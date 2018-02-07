@@ -66,7 +66,9 @@ const userSchema = mongoose.Schema({
       weird: Number,
       luck: Number,
       harm: Number,
-      experience: Number
+      experience: Number,
+      gear: String,
+      moves: [String]
     }
   }]
 });
