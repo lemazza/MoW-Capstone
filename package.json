@@ -1,0 +1,31 @@
+{
+  "name": "MoW-Capstone",
+  "version": "0.0.1",
+  "description": "Monster of the Week Campaign logs",
+  "repository": "https://github.com/Thinkful-Ed/blog-app-mongoose-challenge-solution",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "mocha --exit"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "mongoose": "^5.0.1",
+    "morgan": "^1.9.0",
+    "nodemon": "^1.14.12",
+    "uuid": "^3.2.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
+    "faker": "^3.1.0",
+    "mocha": "^4.0.1"
+  },
+  "keywords": [
+    "node",
+    "hyperdev",
+    "express"
+  ],
+  "license": "MIT"
+}
