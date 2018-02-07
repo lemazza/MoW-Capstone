@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose')
+const morgan = require('morgan')
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 
@@ -7,7 +8,7 @@ mongoose.Promise = global.Promise;
 
 const router = express.Router();
 
-const {User, Campaign} = require('./models');
+const {User, Hunter} = require('./models');
 
 
 
@@ -59,7 +60,6 @@ router.post('/', (req, res) => {
       password: req.body.password,
       userName: req.body.userName,
       name: req.body.name,
-      campaigns: req.body.campaigns,
       hunters: req.body.hunters,
     })
     .then(users => res.status(201).json(users.serialize()))
@@ -80,7 +80,7 @@ router.put('/:id', (req, res) => {
   }
 
   const updated = {};
-  const updateableFields = ['email', 'userName', 'password', 'name', 'campaigns', 'hunters'];
+  const updateableFields = ['email', 'userName', 'password', 'name', 'hunters'];
   updateableFields.forEach(field => {
     if (field in req.body) {
       updated[field] = req.body[field];

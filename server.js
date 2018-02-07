@@ -2,11 +2,13 @@
 const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 
 const { DATABASE_URL, PORT } = require('./config');
 
 const usersRouter = require('./usersRouter');
-const campaignsRouter = require('./campaignsRouter');
+const huntersRouter = require('./huntersRouter');
+//const campaignsRouter = require('./campaignsRouter');
 
 const app = express();
 
@@ -15,9 +17,9 @@ app.use(bodyParser.json());
 
 
 app.use(express.static('public'));
-app.use('/api/campaigns', campaignsRouter);
+//app.use('/api/campaigns', campaignsRouter);
 app.use('/api/users', usersRouter);
-
+app.use('/api/hunters', huntersRouter);
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/views/index.html');
