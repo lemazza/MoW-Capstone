@@ -1,6 +1,8 @@
 'use strict';
 
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+
 mongoose.Promise = global.Promise;
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
@@ -56,26 +58,40 @@ const userSchema = mongoose.Schema({
     lastName: String
   },
   //campaigns: [{type: ObjectId, ref: 'Campaign'}],
-  hunters: [{type: ObjectId, ref: 'Hunter'}]
+  characters: [{type: ObjectId, ref: 'Character'}]
+});
+
+userSchema.virtual('fullName').get(function() {
+  return `${name.firstName} ${name.lastName}`.trim();
 });
 
 userSchema.methods.serialize = function() {
   return {
     id: this._id,
     userName: this.userName,
-    name: this.name,
+    name: this.fullName,
     //campaigns: this.campaigns,
-    hunters: this.hunters
+    characters: this.characters
   };
 };
 
 
 
+userSchema.methods.validatePassword = function(password) {
+  return bcrypt.compare(password, this.password);
+};
+
+userSchema.statics.hashPassword = function(password) {
+  return bcrypt.hash(password, 10);
+};
+
+
+
 /*=================================================
-  HUNTERS
+  CHARACTERS
 ==================================================*/
 
-const hunterSchema = mongoose.Schema({
+const characterSchema = mongoose.Schema({
   name: {type: String, required: true},
   creator: {type: ObjectId, ref: 'User', required: true},
   description: String,
@@ -93,7 +109,7 @@ const hunterSchema = mongoose.Schema({
   moves: [String]
 })
      
-hunterSchema.methods.serialize = function() {
+characterSchema.methods.serialize = function() {
   return {
     id: this._id,
     creator: this.creator,
@@ -114,13 +130,23 @@ hunterSchema.methods.serialize = function() {
   };
 };
 
+
+characterSchema.methods.validatePassword = function(password) {
+  return bcrypt.compare(password, this.password);
+};
+
+characterSchema.statics.hashPassword = function(password) {
+  return bcrypt.hash(password, 10);
+};
+
+
 /*=================================================
   EXPORTS
 ==================================================*/
 
 //const Campaign = mongoose.model('Campaign', campaignSchema);
 const User = mongoose.model('User', userSchema);
-const Hunter = mongoose.model('Hunter', hunterSchema);
+const Character = mongoose.model('Character', characterSchema);
 
 
-module.exports = {Hunter, User};
+module.exports = {Character, User};

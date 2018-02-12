@@ -8,7 +8,7 @@ mongoose.Promise = global.Promise;
 
 const router = express.Router();
 
-const {Hunter, User} = require('./models');
+const {Character, User} = require('./models');
 
 
 
@@ -18,11 +18,11 @@ router.use(bodyParser.json());
 
 
 router.get('/', (req, res) => {
-  Hunter
+  Character
     .find()
-    .then(hunters => {
+    .then(characters => {
       res.json({
-        hunters: hunters.map(hunter => hunter.serialize())
+        characters: characters.map(character => character.serialize())
       });
     })
     .catch(err => {
@@ -32,9 +32,9 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-  Hunter
+  Character
     .findById(req.params.id)
-    .then(hunter => res.json(hunter.serialize()))
+    .then(character => res.json(character.serialize()))
     .catch(err => {
       console.error(err);
       res.status(500).json({ error: 'Something went wrong.  Be sure your request is properly formatted.' });
@@ -54,7 +54,7 @@ router.post('/', (req, res) => {
     }
   }
 
-  Hunter
+  Character
     .create({
       creator: req.body.creator,
       name: req.body.name,
@@ -72,7 +72,7 @@ router.post('/', (req, res) => {
       gear: req.body.gear,
       moves: req.body.moves
     })
-    .then(hunters => res.status(201).json(hunters.serialize()))
+    .then(characters => res.status(201).json(characters.serialize()))
     .catch(err => {
       console.error(err);
       res.status(500).json({ error: 'Something went wrong' });
@@ -96,19 +96,19 @@ router.put('/:id', (req, res) => {
     }
   });
 
-  Hunter
+  Character
     .findByIdAndUpdate(req.params.id, { $set: updated }, { new: true })
-    .then(updatedhunter => res.status(200).json(updatedhunter.serialize()))
+    .then(updatedcharacter => res.status(200).json(updatedcharacter.serialize()))
     .catch(err => res.status(500).json({ message: 'Something went wrong' }));
 });
 
 
 
 router.delete('/:id', (req, res) => {
-  Hunter
+  Character
     .findByIdAndRemove(req.params.id)
     .then(() => {
-      console.log(`Deleted blog hunter with id \`${req.params.id}\``);
+      console.log(`Deleted blog character with id \`${req.params.id}\``);
       res.status(204).end();
     })
     .catch(err => {

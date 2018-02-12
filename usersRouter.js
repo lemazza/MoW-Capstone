@@ -8,7 +8,7 @@ mongoose.Promise = global.Promise;
 
 const router = express.Router();
 
-const {User, Hunter} = require('./models');
+const {User, Character} = require('./models');
 
 
 
@@ -60,7 +60,7 @@ router.post('/', (req, res) => {
       password: req.body.password,
       userName: req.body.userName,
       name: req.body.name,
-      hunters: req.body.hunters,
+      characters: req.body.characters,
     })
     .then(users => res.status(201).json(users.serialize()))
     .catch(err => {
@@ -80,7 +80,7 @@ router.put('/:id', (req, res) => {
   }
 
   const updated = {};
-  const updateableFields = ['email', 'userName', 'password', 'name', 'hunters'];
+  const updateableFields = ['email', 'userName', 'password', 'name', 'characters'];
   updateableFields.forEach(field => {
     if (field in req.body) {
       updated[field] = req.body[field];

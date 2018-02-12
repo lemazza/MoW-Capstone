@@ -1,8 +1,8 @@
 {
   "name": "MoW-Capstone",
   "version": "0.0.1",
-  "description": "Monster of the Week Campaign logs",
-  "repository": "https://github.com/Thinkful-Ed/blog-app-mongoose-challenge-solution",
+  "description": "Monster of the Week character creator",
+  "repository": "https://github.com/lemazza/MoW-Capstone",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
