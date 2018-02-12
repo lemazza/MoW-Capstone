@@ -52,17 +52,15 @@ campaignSchema.methods.serialize = function() {
 const userSchema = mongoose.Schema({
   email: {type: String, required: true},
   password: {type: String, required: true},
-  userName: {type: String, required: true},
-  name: {
-    firstName: String,
-    lastName: String
-  },
+  userName: {type: String, required: true, unique: true},
+  firstName: {type: String, default: ""},
+  lastName: {type: String, default: ""},
   //campaigns: [{type: ObjectId, ref: 'Campaign'}],
   characters: [{type: ObjectId, ref: 'Character'}]
 });
 
 userSchema.virtual('fullName').get(function() {
-  return `${name.firstName} ${name.lastName}`.trim();
+  return `${firstName} ${lastName}`.trim();
 });
 
 userSchema.methods.serialize = function() {
@@ -106,7 +104,8 @@ const characterSchema = mongoose.Schema({
   harm: Number,
   experience: Number,
   gear: String,
-  moves: [String]
+  moves: [String],
+  public: Boolean
 })
      
 characterSchema.methods.serialize = function() {
@@ -126,7 +125,8 @@ characterSchema.methods.serialize = function() {
     harm: this.harm,
     experience: this.experience,
     gear: this.gear,
-    moves: this.moves
+    moves: this.moves, 
+    public: this.public
   };
 };
 

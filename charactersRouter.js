@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const morgan = require('morgan')
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
+const passport = require('passport');
 
 mongoose.Promise = global.Promise;
 
@@ -10,6 +11,7 @@ const router = express.Router();
 
 const {Character, User} = require('./models');
 
+const jwtAuth = passport.authenticate('jwt', { session: false });
 
 
 router.use(morgan('common'));
@@ -17,13 +19,16 @@ router.use(bodyParser.json());
 
 
 
-router.get('/', (req, res) => {
+router.get('/random', (req, res) => {
   Character
-    .find()
-    .then(characters => {
-      res.json({
-        characters: characters.map(character => character.serialize())
-      });
+    .find({public: true, image: true})
+    .then(
+      const totalResults = this.count();
+      const randomNum = Math.floor(Math.random * totalResults);
+      return this[randomNum];
+    )
+    .then(character => {
+      res.json(character.serialize())
     })
     .catch(err => {
       console.error(err);
@@ -43,7 +48,7 @@ router.get('/:id', (req, res) => {
 
 
 
-router.post('/', (req, res) => {
+router.post('/', jwtAuth, (req, res) => {
   const requiredFields = ['creator', 'name', 'class'];
   for (let i = 0; i < requiredFields.length; i++) {
     const field = requiredFields[i];
@@ -81,7 +86,7 @@ router.post('/', (req, res) => {
 });
 
 
-router.put('/:id', (req, res) => {
+router.put('/:id', jwtAuth, (req, res) => {
   if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
     res.status(400).json({
       error: 'Request path id and request body id values must match'
@@ -104,7 +109,7 @@ router.put('/:id', (req, res) => {
 
 
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', jwtAuth, (req, res) => {
   Character
     .findByIdAndRemove(req.params.id)
     .then(() => {

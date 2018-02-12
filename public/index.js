@@ -1,9 +1,9 @@
 
 function randomHunter () {
-  $.get("../api/hunters")
+  $.get("../api/characters/random")
     .done(data => {
-      let hunters = JSON.stringify(data);
-      console.log(hunters);
+      let characters = JSON.stringify(data);
+      console.log(characters);
     })
 }
 
