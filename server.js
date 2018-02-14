@@ -4,6 +4,8 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const passport = require('passport');
+require('dotenv').config();
+
 
 const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
 
@@ -28,6 +30,7 @@ app.use(express.static('public'));
 //app.use('/api/campaigns', campaignsRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/characters', charactersRouter);
+app.use('/api/auth', authRouter);
 
 app.get('/api/protected', jwtAuth, (req, res) => {
   return res.json({

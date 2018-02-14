@@ -60,16 +60,15 @@ const userSchema = mongoose.Schema({
 });
 
 userSchema.virtual('fullName').get(function() {
-  return `${firstName} ${lastName}`.trim();
+  return `${this.firstName} ${this.lastName}`.trim();
 });
 
 userSchema.methods.serialize = function() {
   return {
     id: this._id,
     userName: this.userName,
-    name: this.fullName,
-    //campaigns: this.campaigns,
-    characters: this.characters
+    characters: this.characters,
+    name: this.fullName
   };
 };
 

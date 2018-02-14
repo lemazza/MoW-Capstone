@@ -17,16 +17,17 @@ const jwtAuth = passport.authenticate('jwt', { session: false });
 router.use(morgan('common'));
 router.use(bodyParser.json());
 
-
+//test text
 
 router.get('/random', (req, res) => {
+  let totalResults, randomNum;
   Character
-    .find({public: true, image: true})
-    .then(
-      const totalResults = this.count();
-      const randomNum = Math.floor(Math.random * totalResults);
-      return this[randomNum];
-    )
+    .find({public: true})
+    .then(characters=> {
+      totalResults = Object.keys(characters).length;
+      randomNum = Math.floor(Math.random() * totalResults);
+      return characters[randomNum];
+    })
     .then(character => {
       res.json(character.serialize())
     })
@@ -75,7 +76,8 @@ router.post('/', jwtAuth, (req, res) => {
       harm: req.body.harm,
       experience: req.body.experience,
       gear: req.body.gear,
-      moves: req.body.moves
+      moves: req.body.moves,
+      public: req.body.public
     })
     .then(characters => res.status(201).json(characters.serialize()))
     .catch(err => {
@@ -94,7 +96,7 @@ router.put('/:id', jwtAuth, (req, res) => {
   }
 
   const updated = {};
-  const updateableFields = ['name', 'description', 'image', 'class', 'charm', 'cool', 'sharp', 'tough', 'weird', 'luck', 'harm', 'experience', 'gear', 'moves'];
+  const updateableFields = ['name', 'description', 'image', 'class', 'charm', 'cool', 'sharp', 'tough', 'weird', 'luck', 'harm', 'experience', 'gear', 'moves', 'public'];
   updateableFields.forEach(field => {
     if (field in req.body) {
       updated[field] = req.body[field];

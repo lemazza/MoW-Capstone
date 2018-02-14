@@ -4,22 +4,31 @@ const passport = require('passport');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 
+const {localStrategy, jwtStrategy} = require('./strategies');
+
 const config = require('../config');
 const router = express.Router();
 
 const createAuthToken = function(user) {
   return jwt.sign({user}, config.JWT_SECRET, {
-    subject: user.username,
+    subject: user.userName,
     expiresIn: config.JWT_EXPIRY,
     algorithm: 'HS256'
   });
 };
 
+
+passport.use(localStrategy);
+passport.use(jwtStrategy);
+
 const localAuth = passport.authenticate('local', {session: false});
+
 router.use(bodyParser.json());
 // The user provides a username and password to login
+
 router.post('/login', localAuth, (req, res) => {
-  const authToken = createAuthToken(req.user.serialize());
+  console.log("you made it this far");
+  const authToken = createAuthToken(req.body);
   res.json({authToken});
 });
 

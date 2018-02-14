@@ -64,7 +64,7 @@ router.get('/:username', jwtAuth, (req, res) => {
 router.post('/', jsonParser, (req, res) => {
   const requiredFields = ['email', 'userName', 'password'];
   const missingField = requiredFields.find(field => !(field in req.body));
-
+  console.log(req.body);
   if (missingField) {
     return res.status(422).json({
       code: 422,
@@ -114,7 +114,7 @@ router.post('/', jsonParser, (req, res) => {
       min: 1
     },
     password: {
-      min: 10,
+      min: 8,
       // bcrypt truncates after 72 characters, so let's not give the illusion
       // of security by storing extra (unused) info
       max: 72
@@ -144,11 +144,13 @@ router.post('/', jsonParser, (req, res) => {
     });
   }
 
-  let {userName, password, firstName = '', lastName = ''} = req.body;
+  let {userName, email, password, firstName = '', lastName = ''} = req.body;
   // Username and password come in pre-trimmed, otherwise we throw an error
   // before this
   firstName = firstName.trim();
   lastName = lastName.trim();
+  console.log('this is userName', userName);
+  console.log('req body', req.body);
 
   return User.find({userName})
     .count()
@@ -166,14 +168,19 @@ router.post('/', jsonParser, (req, res) => {
       return User.hashPassword(password);
     })
     .then(hash => {
+      console.log(hash);
+      console.log('userName is', userName);
       return User.create({
-        userName,
+        userName: userName,
         password: hash,
-        firstName,
-        lastName
+        firstName: firstName,
+        lastName: lastName,
+        email: email
       });
     })
     .then(user => {
+      console.log(user);
+      console.log(user.serialize());
       return res.status(201).json(user.serialize());
     })
     .catch(err => {
@@ -211,7 +218,7 @@ router.post('/', (req, res) => {
       return res.status(400).send(message);
     }
   }
-*/
+
 
 
   User
@@ -230,7 +237,7 @@ router.post('/', (req, res) => {
 
 });
 
-
+*/
 
 router.put('/:id', jwtAuth, (req, res) => {
   if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
