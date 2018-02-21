@@ -12,15 +12,18 @@ function watchSubmit () {
     }
 
     let postString = JSON.stringify(postData);
+    console.log(postData);
 
     $.ajax({
       type: "POST",
       url: "/api/users", 
-      data: postString,
-      dataType: "json"
-    })
-    .done(function(data) {
+      data: postString, 
+      dataType: "json",
+      headers: {"Content-Type": "application/json"},
+      success: function(data) {
         console.log("success! Here's proof:" , data);
+      },
+      contentType: "application/json"
     })
     .fail(function (jqXHR, textStatus, errorThrown) {
         console.log(jqXHR.responseText || textStatus);

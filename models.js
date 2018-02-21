@@ -91,7 +91,6 @@ userSchema.statics.hashPassword = function(password) {
 const characterSchema = mongoose.Schema({
   name: {type: String, required: true},
   creator: {type: ObjectId, ref: 'User', required: true},
-  description: String,
   image: String,
   class: {type: String, required: true},
   charm: Number,
@@ -112,7 +111,6 @@ characterSchema.methods.serialize = function() {
     id: this._id,
     creator: this.creator,
     name: this.name,
-    description: this.description,
     image: this.image,
     class: this.class,
     charm: this.charm,

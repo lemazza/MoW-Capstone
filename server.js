@@ -4,12 +4,15 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const passport = require('passport');
+const ejs = require('ejs');
+const fs = require('fs');
 require('dotenv').config();
 
 
 const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
 
 const { DATABASE_URL, PORT } = require('./config');
+const {data} = require('./data');
 
 const usersRouter = require('./usersRouter');
 const charactersRouter = require('./charactersRouter');
@@ -17,9 +20,24 @@ const charactersRouter = require('./charactersRouter');
 
 const app = express();
 
+
+app.get('/character-creator.js', (req, res)=>{
+  fs.readFile(__dirname + '/public/character-creator.js', (err, contents) =>{
+    if (err) throw err;
+    let content = `const DATA = ${JSON.stringify(data)};\n
+    ${contents}`;
+    res.set('Content-Type', 'text/javascript');
+    res.send(content);
+  })
+})
+
+
+
+
 app.use(morgan('common'));
 app.use(bodyParser.json());
 
+app.set('view engine', 'ejs');
 
 passport.use(localStrategy);
 passport.use(jwtStrategy);
@@ -31,6 +49,10 @@ app.use(express.static('public'));
 app.use('/api/users', usersRouter);
 app.use('/api/characters', charactersRouter);
 app.use('/api/auth', authRouter);
+
+app.get('/character-maker', (req, res)=>{
+  res.render('character-creator', {data: data});
+})
 
 app.get('/api/protected', jwtAuth, (req, res) => {
   return res.json({

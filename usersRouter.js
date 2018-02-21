@@ -14,7 +14,6 @@ const {User, Character} = require('./models');
 const jwtAuth = passport.authenticate('jwt', { session: false });
 
 
-router.use(morgan('common'));
 router.use(bodyParser.json());
 
 
