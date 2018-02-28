@@ -7,6 +7,7 @@
   <meta name="description" content="Create a Character for the roleplaying game Monster of the Week">
   <meta name="keywords" content="Monster of the Week, MoW, Monster, RPG, Apocolypse World">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="/js/jquery.serializejson.js"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.css" rel="stylesheet">
   <link rel="stylesheet" href="main.css">
 </head>
@@ -22,6 +23,7 @@
       <fieldset>
         <legend>Choose a Name and Class</legend>
         <label>Character Name:<input type="text" name="char-name"></label><br>
+        <label>Choose Image: <input type="file" accept=".jpg, .jpeg, .png" name="character-image"></label><br>
         <label>Class:</label><br>
           <% 
             for(let i = 0; i < Object.keys(data).length; i++) {
@@ -36,6 +38,99 @@
           <%}%>
       </fieldset>
 
+      <fieldset>
+        <legend>Luck</legend>
+          <label>You can mark off a Luck box to either change a roll you just made to a 12, as if you had rolled that; or change a wound you have just taken to
+            count as 0-harm, no matter how bad it was. If all your Luck boxes get filled, you’ve run out of good luck.<br>
+            <input type="number" name="luck" value="0" min="0" max="7" step="1">
+          </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Harm</legend>
+          <label>When you suffer harm, mark off the number of boxes equal to harm
+          suffered. When you reach four harm, tick “Unstable.”<br>
+            <input type="number" name="harm[number]" value="0" min="0" max="7" step="1">
+          </label><br>
+          <label>Unstable
+            <input type="checkbox" name="harm[unstable]" value="true"><br>
+            (Unstable injuries will worsen as time passes)
+          </label>
+      </fieldset>
+      </fieldset>
+
+
+      <fieldset>
+        <legend>Leveling Up</legend>
+          <label>Whenever you roll and get a total of 6 or less, or when a move tells you to, mark an experience box.<br>
+          When you have filled all five experience boxes, you level up. Erase
+          the marks and pick an improvement<br>
+            <input type="number" name="experience" value="0" min="0" max="5" step="1">
+          </label>
+      </fieldset>
+
+
+
+ <% /** LOOP THROUGH CLASSES TO MAKE FIELDSETS FOR EACH MODULE **/ %>
+        
+      <%
+        const ignoreKeys = ['class', 'flavorText', 'options', 'name', 'description'];
+        Object.keys(data).forEach(function(className) {
+
+          %> <div id="<%=className%>Form" class="classFields" hidden> <% 
+
+          let charClass = data[className];
+          Object.keys(charClass).forEach(function(classKey) {
+            /* find a named key to explore as a module with options */
+            
+            if ( !ignoreKeys.includes(classKey)) {
+            
+            /* test the type of the value */
+              let classVal = charClass[classKey];
+              
+              let templateData = {
+                  className: className,
+                  module: classKey
+              }
+              switch(typeof(classVal)){
+                  case 'string':
+                      // name and value should be put to the page
+                      break;
+                  case 'object':
+                      if( Array.isArray(classVal) ){
+                          // is an array
+                          // but we have no pattern for this in our data design
+                      } else {
+                          //is an object. should have type and label keys, and options
+                          if( classVal._label ){
+                              templateData.label = classVal._label;
+                          }
+                          if( classVal._type ){
+                              templateData.type = classVal._type;
+                          }
+                          if( classVal.options ){
+                              templateData.options = classVal.options;
+                          }
+                          if( classVal._description ){
+                              templateData.description = classVal._description;
+                          }
+                          
+                      }
+              }
+              let templateLocation = 'forms/fieldsets/' + templateData.module +".ejs";
+              console.log(templateLocation);
+            
+            
+    
+         %> <%-fileExists( __dirname +"/views/" +templateLocation) &&
+             include (templateLocation, {templateData: templateData}) 
+            %> <%
+          };
+        });
+          %> </div> <%   
+    }); %>
+
+<!--
       <fieldset>
         <legend>Choose your Look</legend>
         <div id="look"></div>
@@ -70,52 +165,10 @@
       </fieldset>
 
 
-      <fieldset>
-        <legend>Luck</legend>
-        <div id="luck">
-          <label>Okay</label>
-            <input type="checkbox" name="luck" value="luck1">
-            <input type="checkbox" name="luck" value="luck2">
-            <input type="checkbox" name="luck" value="luck3">
-            <input type="checkbox" name="luck" value="luck4">
-            <input type="checkbox" name="luck" value="luck5">
-            <input type="checkbox" name="luck" value="luck6">
-            <input type="checkbox" name="luck" value="luck7">
-          <label>Doomed</label>
-        </div>
-      </fieldset>
+      
 
 
-      <fieldset>
-        <legend>Harm</legend>
-        <div id="harm">
-          <label>Okay</label>
-            <input type="checkbox" name="harm1" value="harm1">
-            <input type="checkbox" name="harm2" value="harm2">
-            <input type="checkbox" name="harm3" value="harm3">
-            |
-            <input type="checkbox" name="harm4" value="harm4">
-            <input type="checkbox" name="harm5" value="harm5">
-            <input type="checkbox" name="harm6" value="harm6">
-            <input type="checkbox" name="harm7" value="harm7">
-          <label>Dying</label><br>
-          <label>Unstable: <input type="checkbox" name="unstable"></label>
-        </div>
-      </fieldset>
-
-
-      <fieldset>
-        <legend>Leveling Up</legend>
-        <div id="leveling">
-          <label>Experience:</label>
-            <input type="checkbox" name="exp1" value="exp1">
-            <input type="checkbox" name="exp2" value="exp2">
-            <input type="checkbox" name="exp3" value="exp3">
-            <input type="checkbox" name="exp4" value="exp4">
-            <input type="checkbox" name="exp5" value="exp5">
-        </div>
-      </fieldset>
-
+      
 
       <fieldset>
         <legend>Improvements</legend>
@@ -130,9 +183,14 @@
 
       <button type="submit">Submit</button>
     </form>  
+
+
+  -->
+    <button type="submit">Submit</button>
+  </form>
+
   </main>
 </body>
-<script type="text/javascript" src="character-creator.js"></script>
 
 <script type="text/javascript" src="char-creator-submit.js"></script>
 </html>

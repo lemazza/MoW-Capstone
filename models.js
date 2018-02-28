@@ -89,41 +89,60 @@ userSchema.statics.hashPassword = function(password) {
 ==================================================*/
 
 const characterSchema = mongoose.Schema({
-  name: {type: String, required: true},
+  char-name: {type: String, required: true},
   creator: {type: ObjectId, ref: 'User', required: true},
   image: String,
-  class: {type: String, required: true},
-  charm: Number,
-  cool: Number,
-  sharp: Number,
-  tough: Number,
-  weird: Number,
+  classType: {type: String, required: true},
   luck: Number,
-  harm: Number,
-  experience: Number,
-  gear: String,
-  moves: [String],
-  public: Boolean
+  harm: {
+    number: Number,
+    unstable: Boolean
+  },
+  Spooky: {
+    ratings: String,
+    moves: Object,
+    look: Object,
+    improvements: Object,
+    advancedImprovements: Object,
+    history: Object,
+    gear: Object,
+    classSpecific: Object,
+  },
+  Divine: {
+    ratings: String,
+    moves: Object,
+    look: Object,
+    improvements: Object,
+    advancedImprovements: Object,
+    history: Object,
+    gear: Object,
+    classSpecific: Object,
+  },
+  Professional: {
+    ratings: String,
+    moves: Object,
+    look: Object,
+    improvements: Object,
+    advancedImprovements: Object,
+    history: Object,
+    gear: Object,
+    classSpecific: Object,
+  }
 })
      
 characterSchema.methods.serialize = function() {
   return {
     id: this._id,
     creator: this.creator,
-    name: this.name,
+    name: this.char-name,
     image: this.image,
-    class: this.class,
-    charm: this.charm,
-    cool: this.cool,
-    sharp: this.sharp,
-    tough: this.tough,
-    weird: this.weird,
+    class: this.classType,
     luck: this.luck,
     harm: this.harm,
     experience: this.experience,
-    gear: this.gear,
-    moves: this.moves, 
-    public: this.public
+    Spooky: this.Spooky,
+    Professional: this.Professional,
+    Divine: this.Divine
   };
 };
 

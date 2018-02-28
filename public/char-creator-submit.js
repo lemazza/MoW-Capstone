@@ -1,19 +1,25 @@
+function watchClassChange () {
+  //setup event handler
+  $('input[name="classType"]').change(event=> {
+    console.log("input changed");
+    let classType = $('input[name="classType"]:checked').val();
+    $('.classFields').hide();
+    $(`#${classType}Form`).show();
+  });
+}
+
+
+
+
+
+
 function watchSubmit() {
   //on submit take all form data and post to characters
-  $('form').submit(event=>{
+  $('form').submit(function(event) {
     event.preventDefault();
     //build obj from form data
-    let char = {
-      name: $('input[name="char-name"]').val(),
-      class: $('input[name="classType"]:checked').val(),
-      look: discoverLook(),
-      ratings: $('#ratings').find('input[name="ratings-option"]:checked').val(),
-      moves: discoverMoves(),
-      gear: discoverGear(),
-      history: discoverHistory()
-
-    }
-    console.log('char is', char);
+    const formData = $(this).serializeJSON({useIntKeysAsArrayIndex: true });
+    console.log('form data is', formData);
   })
 }
 
@@ -62,5 +68,5 @@ function discoverHistory() {
   return array;
 }
 
-
+$(watchClassChange);
 $(watchSubmit);

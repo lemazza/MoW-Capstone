@@ -32,8 +32,7 @@ app.get('/character-creator.js', (req, res)=>{
 })
 
 
-
-
+//test
 app.use(morgan('common'));
 app.use(bodyParser.json());
 
@@ -51,7 +50,8 @@ app.use('/api/characters', charactersRouter);
 app.use('/api/auth', authRouter);
 
 app.get('/character-maker', (req, res)=>{
-  res.render('character-creator', {data: data});
+  res.render('character-creator', {data: data, fileExists: require('fs').existsSync, __dirname: __dirname});
+  
 })
 
 app.get('/api/protected', jwtAuth, (req, res) => {

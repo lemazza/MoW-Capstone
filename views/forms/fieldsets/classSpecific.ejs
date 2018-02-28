@@ -1,0 +1,46 @@
+<%
+var templateData = (typeof templateData != 'undefined') ? templateData : { };
+%>
+
+<fieldset>
+<legend><%= templateData.label.toUpperCase() %></legend>
+<p><%= templateData.description%></p>
+
+<%
+
+let options = templateData.options || {};
+console.log("OPTIONS EQUAL", options)
+if(typeof options[0] === "object"){
+  console.log(options)
+  options.forEach(optionObj => {
+    console.log(optionObj)
+%>
+    <fieldset>
+      <legend><%=optionObj.name%></legend>
+<%
+    optionObj.options.forEach((option,index)=>{
+%>
+      <label><input type="<%=optionObj.type%>" name="<%=templateData.className%>[<%=templateData.module%>][<%=optionObj.name%>][<%=option%>]" value="true"><%=option%></label><br>
+<% 
+    })
+%>
+    </fieldset>
+<%
+  })
+} else if(templateData.type === "checkbox") { 
+    options.forEach((option, index)=>{
+%> 
+      <label><input type="<%=templateData.type%>" name="<%=templateData.className%>[<%=templateData.module%>][<%=templateData.label%>][<%=option%>]" value="true"><%=option%></label><br>
+<% 
+  })
+} else {
+    options.forEach((option, index)=> {
+%>
+      <label><input type="<%=templateData.type%>" name="<%=templateData.className%>[<%=templateData.module%>][<%=templateData.label%>]" value="<%=option%>"><%=option%></label><br>
+<%    
+  })
+}
+%>
+<%# include checkboxes.ejs %>
+
+</fieldset>

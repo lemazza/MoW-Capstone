@@ -1,0 +1,33 @@
+<%
+var templateData = (typeof templateData != 'undefined') ? templateData : { };
+%>
+
+<fieldset>
+  <legend><%= (templateData.module).toUpperCase()%></legend>
+  <p><%= templateData.label%></p>
+
+<% 
+let options = templateData.options || {};
+console.log("keys", Object.keys(options))
+Object.keys(options).forEach(key=>{
+  let subQuestion = options[key];
+%> 
+
+  <fieldset>
+    <legend><%= key %></legend>
+
+<%
+  subQuestion.options.forEach((option, index) => {
+%>
+
+    <label>
+      <input type="<%=subQuestion._type%>" name="<%=templateData.className%>[<%=templateData.module%>][<%= key %>]" value="<%=option%>">
+      <%=option%>
+    </label><br>
+<%
+  }) 
+%></fieldset><%
+})
+%>
+
+</fieldset>

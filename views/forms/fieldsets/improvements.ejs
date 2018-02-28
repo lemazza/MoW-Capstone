@@ -1,0 +1,21 @@
+<%
+var templateData = (typeof templateData != 'undefined') ? templateData : { };
+%>
+
+<fieldset>
+  <legend><%= (templateData.module).toUpperCase()%></legend>
+  <p><%= templateData.label%></p>
+
+<% 
+let options = templateData.options || {};
+options.forEach((option, index)=>{
+%> 
+
+  <label><input type="<%=templateData.type%>" name="<%=templateData.className%>[<%=templateData.module%>][<%=option%>]" value="true" ><%=option%></label><br>
+
+<% 
+})
+%>
+<%# include checkboxes.ejs %>
+
+</fieldset>

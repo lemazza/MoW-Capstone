@@ -1,0 +1,37 @@
+<%
+var templateData = (typeof templateData != 'undefined') ? templateData : { };
+%>
+
+<fieldset>
+<legend><%= templateData.module.toUpperCase() %></legend>
+<p><%= templateData.label%></p>
+
+<% 
+let options = templateData.options || {};
+options.forEach(optionObj=>{
+%>
+  <fieldset>
+    <legend><%=optionObj.name %></legend>
+
+<% 
+  optionObj.options.forEach((option, index)=>{
+    if(optionObj.type === "radio") {
+%>
+      <label><input type="<%=optionObj.type%>" name="<%=templateData.className%>[<%=templateData.module%>][<%=optionObj.name%>]" value="<%=option%>"><%=option%></label><br>
+<% 
+    } else { 
+%> 
+
+    <label><input type="<%=optionObj.type%>" name="<%=templateData.className%>[<%=templateData.module%>][<%=optionObj.name%>][<%=option%>]" value="true" ><%=option%></label><br>
+
+<% 
+    }
+  })
+%>
+  </fieldset>
+<%  
+})
+%>
+<%# include checkboxes.ejs %>
+
+</fieldset>
