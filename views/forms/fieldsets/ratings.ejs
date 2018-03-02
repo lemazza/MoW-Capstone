@@ -12,7 +12,7 @@ options.forEach((option, index)=>{
   let joinedOpts = option.join(", ");
 %>
  
-  <label><input type="<%=templateData.type%>" name="<%=templateData.className%>[<%=templateData.module%>]" value="<%=joinedOpts %>"><%=joinedOpts%></label><br>
+  <label><input type="<%=templateData.type%>" name="<%=templateData.className%>[<%=templateData.module%>]" value="<%=index%>"><%=joinedOpts%></label><br>
 
 <% 
 })

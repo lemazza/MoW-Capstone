@@ -10,7 +10,7 @@ let options = templateData.options || {};
 options.forEach((option, index)=>{
 %> 
   <label>
-    <input type="<%=templateData.type%>" name="<%=templateData.className%>[<%=templateData.module%>][<%=option.name%>]" value="<%=true%>" >
+    <input type="<%=templateData.type%>" name="<%=templateData.className%>[<%=templateData.module%>][<%=index%>]" value="<%=index%>" data-unchecked-value="false">
     <dt><%=option.name%></dt>
     <dd><%=option.description%></dd>
   </label><br>

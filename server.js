@@ -6,6 +6,8 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const ejs = require('ejs');
 const fs = require('fs');
+const request = require('request');
+const {Character, User} = require('./models');
 require('dotenv').config();
 
 
@@ -51,7 +53,52 @@ app.use('/api/auth', authRouter);
 
 app.get('/character-maker', (req, res)=>{
   res.render('character-creator', {data: data, fileExists: require('fs').existsSync, __dirname: __dirname});
-  
+})
+
+app.get('/character/:id', (req, res)=>{
+  Character
+    .findById(req.params.id)
+    .populate('creator')
+    .then(character => {
+      res.render('character', {data: data, character: character.serialize()})
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({ error: 'Something went wrong.  Be sure your request is properly formatted.' });
+    });
+ /* let charRequest = __dirname+ '/api/characters/' + req.params.id;
+  request.get(charRequest, function(err, response, body) {
+    if (!err && response.statusCode == 200) {
+        var locals = JSON.parse(body);
+        res.render('character', {character: locals, data: data});
+    } else {
+      console.log('err is', err);
+      console.log('body is', body);
+    }
+  })*/
+})
+
+app.get('/user/:id', (req, res)=>{
+  User
+    .findById(req.params.id)
+    .populate('characters')
+    .then(user => {
+      res.render('user', {data: data, user: user.serialize()})
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({ error: 'Something went wrong.  Be sure your request is properly formatted.' });
+    });
+ /* let charRequest = __dirname+ '/api/characters/' + req.params.id;
+  request.get(charRequest, function(err, response, body) {
+    if (!err && response.statusCode == 200) {
+        var locals = JSON.parse(body);
+        res.render('character', {character: locals, data: data});
+    } else {
+      console.log('err is', err);
+      console.log('body is', body);
+    }
+  })*/
 })
 
 app.get('/api/protected', jwtAuth, (req, res) => {

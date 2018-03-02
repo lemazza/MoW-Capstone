@@ -1,1 +1,101 @@
-character page
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>MoW Hunter Maker</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Create a Character for the roleplaying game Monster of the Week">
+  <meta name="keywords" content="Monster of the Week, MoW, Monster, RPG, Apocolypse World">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="/js/jquery.serializejson.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.css" rel="stylesheet">
+  <link rel="stylesheet" href="main.css">
+</head>
+
+<body>
+  <header>
+    <h1>Hunters of the Week</h1>
+  </header>
+
+<%  let charClass = character[character.class];
+%>
+
+  <main>
+    <h2>Hunter Page</h2>
+
+    <nav>
+      <a href="../user/<%=character.creator.id%>"><%=character.creator.userName%></a>
+    </nav>
+
+    <div id="character-box">
+      <header>
+        <image src="<%=character.image%>" alt="<%=character.name%>"></image>
+        <h3><%=character.name%></h3>
+        <h4><%=character.class%></h4>
+      </header>
+
+      <div>
+        <h4>Ratings</h4>
+        <dl>
+<%        let ratingsArray = data[character.class].ratings.options[charClass.ratings]
+          ratingsArray.forEach(rating=>{
+            let category = rating.slice(0,5).trim();
+            let rateValue = rating.slice(-3);%>
+            <dt><%=category%></dt>
+            <dd><%=rateValue%></dd>
+<%        })%>
+        </dl>
+      </div>
+
+      <div id="char-look">
+        <h4>Look</h4>
+        <dl>
+<%        let lookKeys = Object.keys(charClass.look);
+          for (let i =0; i < lookKeys.length; i++) {
+            let key = Object.keys(charClass.look)[i]%>
+          <dt><%=key%></dt>
+          <dd><%=charClass.look[key]%></dd>
+<%        }%>
+        </dl>
+      </div>
+
+
+      <div id="char-luck">
+        <h4>Luck</h4>
+        <p><%=character.luck%></p>
+      </div>
+
+
+      <div id="char-harm">
+        <h4>Harm</h4>
+        <p><%=character.harm.number%></p>
+      </div>
+
+
+      <div id="char-experience">
+        <h4>Experience</h4>
+        <p><%=character.experience%>
+      </div>
+
+
+      <div id="char-moves">
+        <h4>Moves</h4>
+        <dl>
+<%        charClass.moves.forEach(move=>{
+            if(move|| move===0) {%>
+              <dt><%=data[character.class].moves.options[move].name%></dt>
+              <dd><%=data[character.class].moves.options[move].description%></dd>
+<%          } 
+          }) %>
+        </dl>
+      </div>
+
+
+      <div>
+
+      </div>
+    </div>
+  </main>
+
+  <script type="text/javascript" src="char-page.js"></script>
+</body>

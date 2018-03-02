@@ -50,7 +50,7 @@ router.get('/:id', (req, res) => {
 
 
 router.post('/', jwtAuth, (req, res) => {
-  const requiredFields = ['creator', 'name', 'class'];
+  const requiredFields = ['creator', 'charName', 'classType'];
   for (let i = 0; i < requiredFields.length; i++) {
     const field = requiredFields[i];
     if (!(field in req.body)) {
@@ -63,21 +63,15 @@ router.post('/', jwtAuth, (req, res) => {
   Character
     .create({
       creator: req.body.creator,
-      name: req.body.name,
-      description: req.body.description,
-      image: req.body.image,
-      class: req.body.class,
-      charm: req.body.charm,
-      cool: req.body.cool,
-      sharp: req.body.sharp,
-      tough: req.body.tough,
-      weird: req.body.weird,
+      name: req.body.charName,
+      image: req.body.characterImage,
+      class: req.body.classType,
       luck: req.body.luck,
       harm: req.body.harm,
       experience: req.body.experience,
-      gear: req.body.gear,
-      moves: req.body.moves,
-      public: req.body.public
+      Spooky: req.body.Spooky,
+      Divine: req.body.Divine,
+      Professional: req.body.Professional,
     })
     .then(characters => res.status(201).json(characters.serialize()))
     .catch(err => {
@@ -96,7 +90,7 @@ router.put('/:id', jwtAuth, (req, res) => {
   }
 
   const updated = {};
-  const updateableFields = ['name', 'description', 'image', 'class', 'charm', 'cool', 'sharp', 'tough', 'weird', 'luck', 'harm', 'experience', 'gear', 'moves', 'public'];
+  const updateableFields = ['charName', 'description', 'image', 'classType', 'charm', 'cool', 'sharp', 'tough', 'weird', 'luck', 'harm', 'experience', 'gear', 'moves', 'public'];
   updateableFields.forEach(field => {
     if (field in req.body) {
       updated[field] = req.body[field];

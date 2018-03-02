@@ -22,8 +22,8 @@
 
       <fieldset>
         <legend>Choose a Name and Class</legend>
-        <label>Character Name:<input type="text" name="char-name"></label><br>
-        <label>Choose Image: <input type="file" accept=".jpg, .jpeg, .png" name="character-image"></label><br>
+        <label>Character Name:<input type="text" name="charName"></label><br>
+        <label>Choose Image: <input type="text" placeholder="paste an image url" name="characterImage"></label><br>
         <label>Class:</label><br>
           <% 
             for(let i = 0; i < Object.keys(data).length; i++) {
