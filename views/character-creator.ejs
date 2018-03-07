@@ -90,7 +90,8 @@
               
               let templateData = {
                   className: className,
-                  module: classKey
+                  module: classKey,
+                  objectData: character ? character[classKey] : {}
               }
               switch(typeof(classVal)){
                   case 'string':
