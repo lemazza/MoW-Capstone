@@ -1,0 +1,17 @@
+h1 {
+  font-weight:  bold;
+  color: red;
+}
+
+.char-img-container {
+  height: 150px;
+  width: 150px;
+  border: 2px solid blue;
+}
+
+.char-img {
+  display:  block;
+  max-height: 100%;
+  max-width:  100%;
+  margin: 0 auto;
+}

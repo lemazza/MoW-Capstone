@@ -4,6 +4,7 @@ const morgan = require('morgan')
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 const passport = require('passport');
+const {createAuthToken} = require('./auth');
 
 mongoose.Promise = global.Promise;
 
@@ -178,9 +179,9 @@ router.post('/', jsonParser, (req, res) => {
       });
     })
     .then(user => {
-      console.log(user);
-      console.log(user.serialize());
-      return res.status(201).json(user.serialize());
+      let output = user.serialize();
+      output.authToken = createAuthToken(req.body);
+      return res.status(201).json(output);
     })
     .catch(err => {
       // Forward validation errors on to the client, otherwise give a 500

@@ -9,7 +9,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="/js/jquery.serializejson.js"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.css" rel="stylesheet">
-  <link rel="stylesheet" href="main.css">
+  <link rel="stylesheet" href="../main.css" type="text/css">
 </head>
 
 <body>
@@ -27,12 +27,15 @@
 
     <div>
       <h4>Characters</h4>
+      <a href="../character-maker" alt="Character Maker">Create New Character</a>
       <ul>
 <%      user.characters.forEach(character=>{%>
           <li>
-            <image src="<%=character.image%>"></image>
-            <h5>character.name</h5> 
-            <p>character.class</p>
+            <div class="char-img-container">
+                <image class="char-img" src="<%=character.image%>" alt="<%character.name%>"></image>
+            </div>
+            <h5><a href="/character/<%=character.id%>" alt="<%=character.name%> page"><%=character.name%></a></h5> 
+            <p><%=character.class%></p>
           </li>
 <%      })%>
       </ul>
@@ -40,11 +43,11 @@
 
     <div>
       <h4>Update User Info</h4>
-      <a href="">Update</a>
+      <a id="edit-user" href="./edit">Update</a>
     </div>
 
     
   </main>
 
-  <script type="text/javascript" src="user-page.js"></script>
+  <script type="text/javascript" src="../user-page.js"></script>
 </body>

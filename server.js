@@ -11,7 +11,7 @@ const {Character, User} = require('./models');
 require('dotenv').config();
 
 
-const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
+const { router: authRouter, localStrategy, jwtStrategy} = require('./auth');
 
 const { DATABASE_URL, PORT } = require('./config');
 const {data} = require('./data');
@@ -78,6 +78,30 @@ app.get('/character/:id', (req, res)=>{
   })*/
 })
 
+
+app.get('/user/edit', jwtAuth, (req, res)=>{
+  console.log("req.user is :", req);
+  User
+    .findOne({userName: req.user.userName})
+    .then(user=>{
+      res.render('user-edit', {data: data, user: user, UserSchema: User.schema.paths})
+    })
+  //.catch(err => {
+   //console.error(err);
+    //res.status(500).json({ error: 'Something went wrong.  Be sure your request is properly formatted.' });
+  //});
+})
+
+app.put('/user/edit', jwtAuth, (req, res)=>{
+  res.render('user-edit', {data: data, user: req.user.serialize()})
+  .catch(err => {
+    console.error(err);
+    res.status(500).json({ error: 'Something went wrong.  Be sure your request is properly formatted.' });
+  });
+})
+
+
+
 app.get('/user/:id', (req, res)=>{
   User
     .findById(req.params.id)
@@ -89,17 +113,9 @@ app.get('/user/:id', (req, res)=>{
       console.error(err);
       res.status(500).json({ error: 'Something went wrong.  Be sure your request is properly formatted.' });
     });
- /* let charRequest = __dirname+ '/api/characters/' + req.params.id;
-  request.get(charRequest, function(err, response, body) {
-    if (!err && response.statusCode == 200) {
-        var locals = JSON.parse(body);
-        res.render('character', {character: locals, data: data});
-    } else {
-      console.log('err is', err);
-      console.log('body is', body);
-    }
-  })*/
 })
+
+
 
 app.get('/api/protected', jwtAuth, (req, res) => {
   return res.json({

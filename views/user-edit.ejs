@@ -1,6 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
   <title>MoW Hunter Maker</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,22 +12,38 @@
     <h1>Monster of the Week Character Creator</h1>
   </header>
 
-  <div id="login">
-  </div>
+<%
+  
+%>
 
   <main>
-    <p>Monster of the Week is a roleplaying game created by and made by based on the Apocolypse World rules.
-    Players take on the roles of Hunters joined together in a party each with their own backstory for being there.
-    The Keeper, (Dungeonmaster) controls the ebb and flow of the story you all make together.  I mean, basically its a
-    very story driven roleplaying game.</p>
+    <form>
+      <legend>Create New User</legend>
+      <label>First Name: 
+        <input id="fname" type="text" value="">
+      </label>
 
-    <p>Use this site to create and maintain your characters.  Login above or register here to start building your first character</p>
+      <label>Last Name: 
+        <input id="lname" type="text" value="">
+      </label>
+      
+      <label>email: 
+        <input id="email" type="email" value="">
+      </label>
+      
+      <label>username: 
+        <input id="uname" type="text" value="">
+      </label>
+      
+      <label>password: 
+        <input id="pwd" type="password" value="">
+      </label>
 
-    <div id="randomChar">
-    </div>
+      <button type="submit">Submit</button>
+    </form>
+  
   </main>
 
 </body>
-<script type="text/javascript" src="index.js"></script>
+<script type="text/javascript" src="newuser.js"></script>
 </html>
-

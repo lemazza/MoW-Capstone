@@ -8,7 +8,6 @@ var templateData = (typeof templateData != 'undefined') ? templateData : { };
 
 <% 
 let options = templateData.options || {};
-console.log("keys", Object.keys(options))
 Object.keys(options).forEach(key=>{
   let subQuestion = options[key];
 %> 

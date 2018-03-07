@@ -1,4 +1,5 @@
 
+
 function watchSubmit () {
   $("form").submit(function(event) {
     event.preventDefault();
@@ -22,6 +23,10 @@ function watchSubmit () {
       headers: {"Content-Type": "application/json"},
       success: function(data) {
         console.log("success! Here's proof:" , data);
+        localStorage.setItem("userId", data.id);
+        localStorage.setItem("userName", data.userName);
+        localStorage.setItem("authToken", data.authToken);
+        window.location.replace(`user/${data.id}`);
       },
       contentType: "application/json"
     })

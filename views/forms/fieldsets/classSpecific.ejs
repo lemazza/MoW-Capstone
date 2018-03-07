@@ -11,9 +11,7 @@ var templateData = (typeof templateData != 'undefined') ? templateData : { };
 let options = templateData.options || {};
 console.log("OPTIONS EQUAL", options)
 if(typeof options[0] === "object"){
-  console.log(options)
   options.forEach(optionObj => {
-    console.log(optionObj)
 %>
     <fieldset>
       <legend><%=optionObj.name%></legend>

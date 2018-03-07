@@ -22,7 +22,7 @@ router.use(bodyParser.json());
 router.get('/random', (req, res) => {
   let totalResults, randomNum;
   Character
-    .find({public: true})
+    .find({image: {$exists: true}})
     .then(characters=> {
       totalResults = Object.keys(characters).length;
       randomNum = Math.floor(Math.random() * totalResults);
@@ -73,7 +73,13 @@ router.post('/', jwtAuth, (req, res) => {
       Divine: req.body.Divine,
       Professional: req.body.Professional,
     })
-    .then(characters => res.status(201).json(characters.serialize()))
+    .then(character => {
+      User
+      .findByIdAndUpdate(req.body.creator, {$push: {characters: character.id} })
+      .then(function(){
+      res.status(201).json(character.serialize());
+      })
+    })
     .catch(err => {
       console.error(err);
       res.status(500).json({ error: 'Something went wrong' });
