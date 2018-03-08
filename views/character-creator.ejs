@@ -90,7 +90,8 @@
               
               let templateData = {
                   className: className,
-                  module: classKey
+                  module: classKey,
+                  objectData: character ? character[classKey] : {}
               }
               switch(typeof(classVal)){
                   case 'string':
@@ -189,7 +190,7 @@
   </form>
 
   </main>
+  <script type="text/javascript" src="/common.js"></script>
+  <script type="text/javascript" src="/char-creator-submit.js"></script>
 </body>
-
-<script type="text/javascript" src="char-creator-submit.js"></script>
 </html>

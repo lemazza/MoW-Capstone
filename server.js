@@ -51,21 +51,37 @@ app.use('/api/users', usersRouter);
 app.use('/api/characters', charactersRouter);
 app.use('/api/auth', authRouter);
 
-app.get('/character-maker', (req, res)=>{
-  res.render('character-creator', {data: data, fileExists: require('fs').existsSync, __dirname: __dirname});
-})
+function renderCharacterCreator(req, res){
+  res.render('character-creator', {
+      data: data, 
+      fileExists: require('fs').existsSync, 
+      __dirname: __dirname
+  });  
+}
 
-app.get('/character/:id', (req, res)=>{
+app.get('/character-maker', renderCharacterCreator);
+
+
+app.get('/character/:id*', function(req, res, next){
   Character
     .findById(req.params.id)
     .populate('creator')
     .then(character => {
-      res.render('character', {data: data, character: character.serialize()})
+      console.log('Setting res.locals.character:', character);
+      res.locals.character = character || false;
+      next();
     })
     .catch(err => {
       console.error(err);
       res.status(500).json({ error: 'Something went wrong.  Be sure your request is properly formatted.' });
     });
+});
+
+app.get('/character/:id/edit', renderCharacterCreator);
+
+app.get('/character/:id', (req, res)=>{  
+    res.render('character', {data: data})
+  
  /* let charRequest = __dirname+ '/api/characters/' + req.params.id;
   request.get(charRequest, function(err, response, body) {
     if (!err && response.statusCode == 200) {
