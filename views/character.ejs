@@ -47,18 +47,6 @@
         </dl>
       </div>
 
-      <div id="char-look">
-        <h4>Look</h4>
-        <dl>
-<%        let lookKeys = Object.keys(charClass.look);
-          for (let i =0; i < lookKeys.length; i++) {
-            let key = Object.keys(charClass.look)[i]%>
-          <dt><%=key%></dt>
-          <dd><%=charClass.look[key]%></dd>
-<%        }%>
-        </dl>
-      </div>
-
 
       <div id="char-luck">
         <h4>Luck</h4>
@@ -78,6 +66,19 @@
       </div>
 
 
+      <div id="char-look">
+        <h4>Look</h4>
+        <dl>
+<%        let lookKeys = Object.keys(charClass.look);
+          for (let i =0; i < lookKeys.length; i++) {
+            let key = Object.keys(charClass.look)[i]%>
+          <dt><%=key%></dt>
+          <dd><%=charClass.look[key]%></dd>
+<%        }%>
+        </dl>
+      </div>
+
+
       <div id="char-moves">
         <h4>Moves</h4>
         <dl>
@@ -91,9 +92,77 @@
       </div>
 
 
-      <div>
+      <div id="char-gear">
+        <h4>Gear</h4>
+<%      let gearArray = Object.keys(charClass.gear)
+        gearArray.forEach(itemType=>{
+          let options = charClass.gear[itemType]%>
+          <h5><%=itemType%></h5>
+
+<%          if(typeof options=== "object") {%>
+              <ul>
+<%            let keysArray = Object.keys(options)
+
+              keysArray.forEach(key=> {%>
+                <li><%=key%></li>
+<%            })%>
+              </ul>
+
+<%          } else {%>
+              <p><%=options%><p>
+<%          }%>
+<%        })%>
 
       </div>
+
+
+      <div id="char-history">
+        <h4>History</h4>
+        <dl>
+<%      charClass.history.forEach((person, index)=>{
+          if (person) {%>
+            <dt><%=person%></dt>
+            <dd><%=data[character.class].history.options[index]%></dd>
+<%        }
+        })%>
+        </dl>
+      </div>
+
+
+      <div id="char-class-spec">
+
+<%-   fileExists( __dirname +"/views/partials/classSpec.ejs") && 
+      include ('partials/classSpec.ejs', {data: data, character: character})%>
+      </div>
+
+
+      <div id="char-improvements">
+        <h4>Improvements</h4>
+        <ul>
+<%        let impArray = charClass.improvements.filter(Number)
+          impArray.forEach((imp, index)=>{%>
+          <li><%=data[character.class].improvements.options[imp]%></li>
+<%       })%>
+        </ul>
+      </div>
+
+
+      <div id="char-improvements">
+        <h4>Advanced Improvements</h4>
+        <ul>
+<%        let advImpArray = charClass.advancedImprovements.filter(Number)
+          advImpArray.forEach((imp, index)=>{%>
+          <li><%=data[character.class].improvements.options[imp]%></li>
+<%       })%>
+        </ul>
+      </div>
+
+      <div id="char-update">
+        <h4>Update/Delete Character</h4>
+        <a href="<%=character.id%>/edit">Update/Delete Character</a>
+      </div>
+      
+
     </div>
   </main>
 

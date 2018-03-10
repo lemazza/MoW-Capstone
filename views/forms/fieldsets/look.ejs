@@ -10,6 +10,7 @@ var templateData = (typeof templateData != 'undefined') ? templateData : { };
 let options = templateData.options || {};
 Object.keys(options).forEach(key=>{
   let subQuestion = options[key];
+  let charKey = (character.class)? character[character.class].look[key] : ""
 %> 
 
   <fieldset>
@@ -17,10 +18,11 @@ Object.keys(options).forEach(key=>{
 
 <%
   subQuestion.options.forEach((option, index) => {
+    let lookChecked = (charKey === option)? "checked" : "";
 %>
 
     <label>
-      <input type="<%=subQuestion._type%>" name="<%=templateData.className%>[<%=templateData.module%>][<%= key %>]" value="<%=option%>">
+      <input type="<%=subQuestion._type%>" name="<%=templateData.className%>[<%=templateData.module%>][<%= key %>]" value="<%=option%>" <%=lookChecked%>>
       <%=option%>
     </label><br>
 <%

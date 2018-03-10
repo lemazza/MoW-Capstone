@@ -8,9 +8,11 @@ var templateData = (typeof templateData != 'undefined') ? templateData : { };
 <% 
 let options = templateData.options || {};
 options.forEach((option, index)=>{
+  let moveChecked = (character.class && character[character.class].moves[index])? "checked" : "";
+
 %> 
   <label>
-    <input type="<%=templateData.type%>" name="<%=templateData.className%>[<%=templateData.module%>][<%=index%>]" value="<%=index%>" data-unchecked-value="false">
+    <input type="<%=templateData.type%>" name="<%=templateData.className%>[<%=templateData.module%>][<%=index%>]" value="<%=index%>" <%=moveChecked%> >
     <dt><%=option.name%></dt>
     <dd><%=option.description%></dd>
   </label><br>

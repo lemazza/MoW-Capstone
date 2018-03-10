@@ -22,7 +22,22 @@ function randomHunter () {
 /*================================================================
       LOG-IN STUFF
 =================================================================*/
+function cookieParser () {
+  //finds cookies and returns an obj with key-value pairs
+  cookies = document.cookie.split('; ')
+    console.log(cookies);
+    let cookieObj = {}
+    cookies.forEach(cookie=>{
+      let halves = cookie.split("=");
+      cookieObj[halves[0]] = halves[1];
+    })
+    console.log("COOKIES!", cookieObj)
+    return cookieObj;
+}
 
+function delete_cookie( name ) {
+  document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
 
 function formDisplay () {
   return `
@@ -38,24 +53,27 @@ function formDisplay () {
   `
 }
 
-function loggedInDisplay(userName) {
+function loggedInDisplay(userName, userId) {
   return `
-    <p>Logged in as <span class="userName-text">${userName}</span></p>
+    <p>Logged in as <a href="user/${userId}" class="userName-text">${userName}</a></p>
     <button class="logout-button">Log Out</button>
   `
 }
 
 
 function checkLogIn () {
-  let userName = localStorage.getItem('userName');
-  let userId = localStorage.getItem('userId');
-  let authToken = localStorage.getItem('authToken');
-  console.log("localStorage userName is", userName);
-  console.log("localStorage userId is", userId);
-  console.log("localStorage authToken is", authToken);
+  let cookies = cookieParser();
+  let userName = cookies.userName;
+  let userId = cookies.userId;
+  let authToken = cookies.authToken;
+  console.log("Cookie userName is", userName);
+  console.log("Cookie userId is", userId);
+  console.log("Cookie authToken is", authToken);
+  console.log("COOKIE!", document.cookie);
+  
   let htmlOutput;
   if (userName) {
-    htmlOutput = loggedInDisplay(userName)
+    htmlOutput = loggedInDisplay(userName, userId)
   } else {
     htmlOutput = formDisplay()
   }
@@ -68,7 +86,11 @@ function checkLogIn () {
 
 function watchLogOut () {
   $('#login').on("click", ".logout-button", event=>{
-    localStorage.clear();
+    let cookies = cookieParser();
+    delete_cookie("userName");
+    delete_cookie("userId");
+    delete_cookie("authToken");
+    delete_cookie("password"); 
     location.reload();
   })
 }
@@ -90,8 +112,9 @@ function watchLogIn () {
       headers: {"Content-Type": "application/json"},
       success: function(data) {
         console.log("SUCCESS, Here's data:", data);
-        localStorage.setItem('authToken', data.authToken);
-        localStorage.setItem('userName', LoginData.userName);
+        document.cookie = `authToken=${data.authToken}` 
+        document.cookie = `userName=${LoginData.userName}` 
+        document.cookie = `userId=${data.userId}` 
         location.reload();
       }
     })

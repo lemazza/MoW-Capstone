@@ -4,6 +4,7 @@ const passport = require('passport');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 
+const {Character, User} = require('../models');
 const {localStrategy, jwtStrategy} = require('./strategies');
 
 const config = require('../config');
@@ -27,9 +28,14 @@ router.use(bodyParser.json());
 // The user provides a username and password to login
 
 router.post('/login', localAuth, (req, res) => {
-  console.log("you made it this far");
   const authToken = createAuthToken(req.body);
-  res.json({authToken});
+
+  User
+  .findOne({userName: req.body.userName})
+  .then(user=>{
+  res.json({authToken, userId: user.id});
+  })
+
 });
 
 const jwtAuth = passport.authenticate('jwt', {session: false});

@@ -9,10 +9,9 @@ var templateData = (typeof templateData != 'undefined') ? templateData : { };
 <% 
 let options = templateData.options || {};
 options.forEach((option, index)=>{
+  let impCheck = (character.class && character[character.class].improvements[index])? "checked" : "";
 %> 
-
-  <label><input type="<%=templateData.type%>" name="<%=templateData.className%>[<%=templateData.module%>][<%=option%>]" value="true" ><%=option%></label><br>
-
+  <label><input type="<%=templateData.type%>" name="<%=templateData.className%>[<%=templateData.module%>][<%=index%>]" value="<%=index%>" <%=impCheck%> ><%=option%></label><br>
 <% 
 })
 %>

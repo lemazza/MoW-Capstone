@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const passport = require('passport');
+var cookieParser = require('cookie-parser')
 const ejs = require('ejs');
 const fs = require('fs');
 const request = require('request');
@@ -45,6 +46,7 @@ passport.use(jwtStrategy);
 
 const jwtAuth = passport.authenticate('jwt', { session: false });
 
+app.use(cookieParser());
 app.use(express.static('public'));
 //app.use('/api/campaigns', campaignsRouter);
 app.use('/api/users', usersRouter);
@@ -53,10 +55,13 @@ app.use('/api/auth', authRouter);
 
 function renderCharacterCreator(req, res){
   res.render('character-creator', {
-      data: data, 
-      fileExists: require('fs').existsSync, 
-      __dirname: __dirname
+    data: data, 
+    character: res.locals.character? res.locals.character : {},
+    fileExists: require('fs').existsSync, 
+    __dirname: __dirname
   });  
+
+  
 }
 
 app.get('/character-maker', renderCharacterCreator);
@@ -64,23 +69,28 @@ app.get('/character-maker', renderCharacterCreator);
 
 app.get('/character/:id*', function(req, res, next){
   Character
-    .findById(req.params.id)
-    .populate('creator')
-    .then(character => {
-      console.log('Setting res.locals.character:', character);
-      res.locals.character = character || false;
-      next();
-    })
-    .catch(err => {
-      console.error(err);
-      res.status(500).json({ error: 'Something went wrong.  Be sure your request is properly formatted.' });
-    });
+  .findById(req.params.id)
+  .populate('creator')
+  .then(character => {
+    res.locals.character = character || false;
+    next();
+  })
+  .catch(err => {
+    console.error(err);
+    res.status(500).json({ error: 'Something went wrong.  Be sure your request is properly formatted.' });
+  });
 });
 
 app.get('/character/:id/edit', renderCharacterCreator);
 
 app.get('/character/:id', (req, res)=>{  
-    res.render('character', {data: data})
+    res.render('character', 
+      {
+        data: data, 
+        fileExists: require('fs').existsSync, 
+        __dirname: __dirname
+      }
+    )
   
  /* let charRequest = __dirname+ '/api/characters/' + req.params.id;
   request.get(charRequest, function(err, response, body) {
@@ -95,13 +105,19 @@ app.get('/character/:id', (req, res)=>{
 })
 
 
-app.get('/user/edit', jwtAuth, (req, res)=>{
-  console.log("req.user is :", req);
+
+function attachBearer(req, res, next) {
+  req.headers.authorization = `Bearer ${req.cookies.authToken}`
+  next();
+}
+
+app.get('/user/edit', attachBearer, jwtAuth, (req, res)=>{
+  console.log("req.cookie is :", req.cookie);
   User
-    .findOne({userName: req.user.userName})
-    .then(user=>{
-      res.render('user-edit', {data: data, user: user, UserSchema: User.schema.paths})
-    })
+  .findOne({userName: req.user.userName})
+  .then(user=>{
+    res.render('user-edit', {data: data, user: user, UserSchema: User.schema.paths})
+  })
   //.catch(err => {
    //console.error(err);
     //res.status(500).json({ error: 'Something went wrong.  Be sure your request is properly formatted.' });
@@ -120,15 +136,15 @@ app.put('/user/edit', jwtAuth, (req, res)=>{
 
 app.get('/user/:id', (req, res)=>{
   User
-    .findById(req.params.id)
-    .populate('characters')
-    .then(user => {
-      res.render('user', {data: data, user: user.serialize()})
-    })
-    .catch(err => {
-      console.error(err);
-      res.status(500).json({ error: 'Something went wrong.  Be sure your request is properly formatted.' });
-    });
+  .findById(req.params.id)
+  .populate('characters')
+  .then(user => {
+    res.render('user', {data: data, user: user.serialize()})
+  })
+  .catch(err => {
+    console.error(err);
+    res.status(500).json({ error: 'Something went wrong.  Be sure your request is properly formatted.' });
+  });
 })
 
 

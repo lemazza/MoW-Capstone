@@ -1,0 +1,36 @@
+<%let dataCat = data[character.class].classSpecific
+  let charCat = character[character.class].classSpecific%>
+
+
+<h4><%=dataCat._label%></h4>
+
+<%// check for subcategories
+console.log("CLASS", charCat)
+  console.log(typeof dataCat.options[0], "MIDDLE", dataCat.options);
+  if (typeof dataCat.options[0] === 'object') {
+    let objKeys = Object.keys(charCat)
+    objKeys.forEach((key, index)=>{%>
+    <h5><%=key%></h5>
+      <ul><%
+        let optionsArray = charCat[key].filter(Number);
+        optionsArray.forEach(opt=>{%>
+          <li><%=dataCat.options[index].options[opt]%></li><%
+        })%>
+      </ul><%
+    })
+
+
+  } else if (dataCat._type === "checkbox"){
+    let checkedArray = charCat[dataCat._label].filter(Number);%>
+    <ul>
+      <%checkedArray.forEach(elem=>{%>
+        <li><%=dataCat.options[elem]%></li>
+<%      })%>
+      
+    </ul><% 
+  } else {%>
+    <p><%=charCat[dataCat._label]%></p><% 
+  }
+
+
+%>

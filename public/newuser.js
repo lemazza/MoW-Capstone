@@ -23,9 +23,9 @@ function watchSubmit () {
       headers: {"Content-Type": "application/json"},
       success: function(data) {
         console.log("success! Here's proof:" , data);
-        localStorage.setItem("userId", data.id);
-        localStorage.setItem("userName", data.userName);
-        localStorage.setItem("authToken", data.authToken);
+        document.cookie = `authToken=${data.authToken}` 
+        document.cookie = `userName=${data.userName}` 
+        document.cookie = `userId=${data.id}` 
         window.location.replace(`user/${data.id}`);
       },
       contentType: "application/json"

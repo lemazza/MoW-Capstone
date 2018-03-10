@@ -5,38 +5,33 @@
   <meta name="keywords" content="Monster of the Week, MoW, Monster, RPG, Apocolypse World">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.css" rel="stylesheet">
-  <link rel="stylesheet" href="main.css">
+  <link rel="stylesheet" href="../main.css">
 </head>
 <body>
   <header>
     <h1>Monster of the Week Character Creator</h1>
   </header>
-
+    <h2>Edit User</h2>
 <%
-  
+  let fnameVal = user.firstName || "";
+  let lnameVal = user.lastName || "";
+  let emailVal = user.email || "";
 %>
-
   <main>
+    <button type="button" id="user-delete">Delete User</button>
+    <p>This will permanently delete <%=user.userName%> and all associated characters</p>
     <form>
-      <legend>Create New User</legend>
+      <legend>Edit <a href="./<%=user.id%>"><%=user.userName%>'s</a> Info</legend>
       <label>First Name: 
-        <input id="fname" type="text" value="">
+        <input id="fname" type="text" value="<%=fnameVal%>">
       </label>
 
       <label>Last Name: 
-        <input id="lname" type="text" value="">
+        <input id="lname" type="text" value="<%=lnameVal%>">
       </label>
       
       <label>email: 
-        <input id="email" type="email" value="">
-      </label>
-      
-      <label>username: 
-        <input id="uname" type="text" value="">
-      </label>
-      
-      <label>password: 
-        <input id="pwd" type="password" value="">
+        <input id="email" type="email" value="<%=emailVal%>">
       </label>
 
       <button type="submit">Submit</button>
@@ -45,5 +40,5 @@
   </main>
 
 </body>
-<script type="text/javascript" src="newuser.js"></script>
+<script type="text/javascript" src="../edit-user.js"></script>
 </html>

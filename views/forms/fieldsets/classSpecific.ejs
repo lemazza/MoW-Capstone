@@ -1,5 +1,6 @@
 <%
 var templateData = (typeof templateData != 'undefined') ? templateData : { };
+let clSpec = (character.class && character[character.class].classSpecific)? character[character.class].classSpecific  : {}
 %>
 
 <fieldset>
@@ -9,32 +10,36 @@ var templateData = (typeof templateData != 'undefined') ? templateData : { };
 <%
 
 let options = templateData.options || {};
-console.log("OPTIONS EQUAL", options)
-if(typeof options[0] === "object"){
+if(typeof options[0] === "object" ){
+  console.log("passed first one, 'object test'", character.class );
   options.forEach(optionObj => {
 %>
     <fieldset>
       <legend><%=optionObj.name%></legend>
 <%
     optionObj.options.forEach((option,index)=>{
-%>
-      <label><input type="<%=optionObj.type%>" name="<%=templateData.className%>[<%=templateData.module%>][<%=optionObj.name%>][<%=option%>]" value="true"><%=option%></label><br>
+      let charCheck = (character.class && clSpec[optionObj.name] && clSpec[optionObj.name][index])? "checked" : ""
+%>    
+      <label><input type="<%=optionObj.type%>" name="<%=templateData.className%>[<%=templateData.module%>][<%=optionObj.name%>][<%=index%>]" value="<%=index%>" <%=charCheck%> ><%=option%></label><br>
 <% 
     })
 %>
     </fieldset>
 <%
   })
-} else if(templateData.type === "checkbox") { 
+} else if(templateData.type === "checkbox") {
+    console.log("running 'checkbox' test for", character.class); 
     options.forEach((option, index)=>{
+      let charCheck = (character.class && clSpec[templateData.label] &&clSpec[templateData.label][index])? "checked" : "";
 %> 
-      <label><input type="<%=templateData.type%>" name="<%=templateData.className%>[<%=templateData.module%>][<%=templateData.label%>][<%=option%>]" value="true"><%=option%></label><br>
+      <label><input type="<%=templateData.type%>" name="<%=templateData.className%>[<%=templateData.module%>][<%=templateData.label%>][<%=index%>]" value="<%=index%>" <%=charCheck%> ><%=option%></label><br>
 <% 
   })
 } else {
     options.forEach((option, index)=> {
+      let charCheck = (character.class && clSpec[templateData.label] &&clSpec[templateData.label] === option)? "checked" : "";
 %>
-      <label><input type="<%=templateData.type%>" name="<%=templateData.className%>[<%=templateData.module%>][<%=templateData.label%>]" value="<%=option%>"><%=option%></label><br>
+      <label><input type="<%=templateData.type%>" name="<%=templateData.className%>[<%=templateData.module%>][<%=templateData.label%>]" value="<%=option%>" <%=charCheck%> ><%=option%></label><br>
 <%    
   })
 }

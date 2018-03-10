@@ -3,7 +3,7 @@ function getLocals() {
   console.log("userName:", localStorage.getItem("userName"));
   console.log("authToken:", localStorage.getItem("authToken"));
 }
-
+/*
 function checkEdit() {
   $('#edit-user').click(event=>{
     event.preventDefault();
@@ -16,12 +16,12 @@ function checkEdit() {
       },
       success: function(data) {
         console.log(data)
-        window.location.replace(data)
+        window.location.assign(data)
       }
     })
   })
 }
 
 
-$(checkEdit);
+$(checkEdit);*/
 $(getLocals);

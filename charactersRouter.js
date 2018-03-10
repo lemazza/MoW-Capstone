@@ -22,29 +22,29 @@ router.use(bodyParser.json());
 router.get('/random', (req, res) => {
   let totalResults, randomNum;
   Character
-    .find({image: {$exists: true}})
-    .then(characters=> {
-      totalResults = Object.keys(characters).length;
-      randomNum = Math.floor(Math.random() * totalResults);
-      return characters[randomNum];
-    })
-    .then(character => {
-      res.json(character.serialize())
-    })
-    .catch(err => {
-      console.error(err);
-      res.status(500).json({ error: 'Something went wrong.  Be sure your request is properly formatted.' });
-    });
+  .find({image: {$exists: true}})
+  .then(characters=> {
+    totalResults = Object.keys(characters).length;
+    randomNum = Math.floor(Math.random() * totalResults);
+    return characters[randomNum];
+  })
+  .then(character => {
+    res.json(character.serialize())
+  })
+  .catch(err => {
+    console.error(err);
+    res.status(500).json({ error: 'Something went wrong.  Be sure your request is properly formatted.' });
+  });
 });
 
 router.get('/:id', (req, res) => {
   Character
-    .findById(req.params.id)
-    .then(character => res.json(character.serialize()))
-    .catch(err => {
-      console.error(err);
-      res.status(500).json({ error: 'Something went wrong.  Be sure your request is properly formatted.' });
-    });
+  .findById(req.params.id)
+  .then(character => res.json(character.serialize()))
+  .catch(err => {
+    console.error(err);
+    res.status(500).json({ error: 'Something went wrong.  Be sure your request is properly formatted.' });
+  });
 });
 
 
@@ -104,24 +104,27 @@ router.put('/:id', jwtAuth, (req, res) => {
   });
 
   Character
-    .findByIdAndUpdate(req.params.id, { $set: updated }, { new: true })
-    .then(updatedcharacter => res.status(200).json(updatedcharacter.serialize()))
-    .catch(err => res.status(500).json({ message: 'Something went wrong' }));
+  .findByIdAndUpdate(req.params.id, { $set: updated }, { new: true })
+  .then(updatedcharacter => res.status(200).json(updatedcharacter.serialize()))
+  .catch(err => res.status(500).json({ message: 'Something went wrong' }));
 });
 
+function attachBearer(req, res, next) {
+  req.headers.authorization = `Bearer ${req.cookies.authToken}`
+  next();
+}
 
-
-router.delete('/:id', jwtAuth, (req, res) => {
+router.delete('/:id', attachBearer, jwtAuth, (req, res) => {
   Character
-    .findByIdAndRemove(req.params.id)
-    .then(() => {
-      console.log(`Deleted blog character with id \`${req.params.id}\``);
-      res.status(204).end();
-    })
-    .catch(err => {
-      console.error(err);
-      res.status(500).json({ error: 'something went terribly wrong' });
-    });
+  .findByIdAndRemove(req.params.id)
+  .then(() => {
+    console.log(`Deleted character with id \`${req.params.id}\``);
+    res.status(204).end();
+  })
+  .catch(err => {
+    console.error(err);
+    res.status(500).json({ error: 'something went terribly wrong' });
+  });
 });
 
 

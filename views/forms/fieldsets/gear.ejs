@@ -1,37 +1,33 @@
 <%
-var templateData = (typeof templateData != 'undefined') ? templateData : { };
-%>
+var templateData = (typeof templateData != 'undefined') ? templateData : { };%>
 
 <fieldset>
 <legend><%= templateData.module.toUpperCase() %></legend>
 <p><%= templateData.label%></p>
 
-<% 
-let options = templateData.options || {};
-options.forEach(optionObj=>{
-%>
-  <fieldset>
-    <legend><%=optionObj.name %></legend>
+<%  let options = templateData.options || {};
+    options.forEach((optionObj, nameIndex)=>{
+      let optName = (character.class && character[character.class].gear[optionObj.name])? character[character.class].gear[optionObj.name] : "";
+      %>
+      <fieldset>
+        <legend><%=optionObj.name %></legend>
 
-<% 
-  optionObj.options.forEach((option, index)=>{
-    if(optionObj.type === "radio") {
-%>
-      <label><input type="<%=optionObj.type%>" name="<%=templateData.className%>[<%=templateData.module%>][<%=optionObj.name%>]" value="<%=option%>"><%=option%></label><br>
-<% 
-    } else { 
-%> 
+<%    optionObj.options.forEach((option, index)=>{
+        if(optionObj.type === "radio") {
+          let optCheck = (character.class && optName === option)? "checked" : "";%>
+          <label><input type="<%=optionObj.type%>" name="<%=templateData.className%>[<%=templateData.module%>][<%=optionObj.name%>]" value="<%=option%>" <%=optCheck%> ><%=option%></label><br>
+<%      } else {
+            let boxCheck = (character.class && optName[option])? "checked" : ""
+            console.log(optName, optName[option])%> 
 
-    <label><input type="<%=optionObj.type%>" name="<%=templateData.className%>[<%=templateData.module%>][<%=optionObj.name%>][<%=option%>]" value="true" ><%=option%></label><br>
+    <label><input type="<%=optionObj.type%>" name="<%=templateData.className%>[<%=templateData.module%>][<%=optionObj.name%>][<%=option%>]" value="true" <%=boxCheck%> ><%=option%></label><br>
 
-<% 
-    }
-  })
-%>
+<% }
+  })%>
+
   </fieldset>
-<%  
-})
-%>
+<%})%>
+
 <%# include checkboxes.ejs %>
 
 </fieldset>

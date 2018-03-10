@@ -8,11 +8,7 @@ function watchClassChange () {
   });
 }
 
-function readLocalStorage () {
-  let authToken = localStorage.getItem('authToken');
-    let userId = localStorage.getItem('userId');
-    console.log("userId:", userId, "authToken", authToken);
-}
+
 
 
 function charCreateSuccess(res){
@@ -33,17 +29,29 @@ function failureRedirectFn(redirectURL){
     }
 }
 
+function cookieParser () {
+  //finds cookies and returns an obj with key-value pairs
+  cookies = document.cookie.split('; ')
+    console.log(cookies);
+    let cookieObj = {}
+    cookies.forEach(cookie=>{
+      let halves = cookie.split("=");
+      cookieObj[halves[0]] = halves[1];
+    })
+    console.log("COOKIES!", cookieObj)
+    return cookieObj;
+}
+
 
 function watchSubmit() {
 
 //on submit take all form data and post to characters
   $('form').submit(function(event) {
     event.preventDefault();
-    
-    
+    let cookies = cookieParser();   
     //build obj from form data
     const formData = $(this).serializeJSON({useIntKeysAsArrayIndex: true, parseBooleans: true});
-    let userId = localStorage.getItem('userId') || INVALID_USER_TOKEN;
+    let userId = cookies.userId || INVALID_USER_TOKEN;
     formData.creator= userId;
       
     postBearerJSON('/api/characters', formData, charCreateSuccess, failureRedirectFn("/characters"))  
@@ -51,6 +59,21 @@ function watchSubmit() {
   })
 }
 
-$(readLocalStorage);
+function watchDelete() {
+  $('#delete-button').click(event=>{
+    event.preventDefault();
+    let charId = $('#delete-button').attr('data-charId')
+    console.log("charId", charId);
+
+    $.ajax({
+      type: "DELETE",
+      url: `/api/characters/${charId}`,
+      data: {id: charId}
+    })
+  })
+}
+
+
+$(watchDelete)
 $(watchClassChange);
 $(watchSubmit);

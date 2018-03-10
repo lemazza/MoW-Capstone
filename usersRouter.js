@@ -17,7 +17,12 @@ const jwtAuth = passport.authenticate('jwt', { session: false });
 
 router.use(bodyParser.json());
 
-
+function attachBearer(req, res, next) {
+  console.log("req.cookies", req.cookies);
+  console.log("authToken", req.cookies.authToken)
+  req.headers.authorization = `Bearer ${req.cookies.authToken}`
+  next();
+}
 /*
 router.get('/', (req, res) => {
   User
@@ -37,12 +42,12 @@ router.get('/', (req, res) => {
 
 router.get('/:username', jwtAuth, (req, res) => {
   User
-    .findOne({'userName' : req.params.username})
-    .then(user => res.json(user.serialize()))
-    .catch(err => {
-      console.error(err);
-      res.status(500).json({ error: 'Something went wrong.  Be sure your request is properly formatted.' });
-    });
+  .findOne({'userName' : req.params.username})
+  .then(user => res.json(user.serialize()))
+  .catch(err => {
+    console.error(err);
+    res.status(500).json({ error: 'Something went wrong.  Be sure your request is properly formatted.' });
+  });
 });
 
 
@@ -247,7 +252,7 @@ router.put('/:id', jwtAuth, (req, res) => {
   }
 
   const updated = {};
-  const updateableFields = ['email', 'userName', 'password', 'name', 'characters'];
+  const updateableFields = ['email', 'userName', 'password', 'firstName', 'lastName', 'characters'];
   updateableFields.forEach(field => {
     if (field in req.body) {
       updated[field] = req.body[field];
@@ -262,17 +267,34 @@ router.put('/:id', jwtAuth, (req, res) => {
 
 
 
-router.delete('/:id', jwtAuth, (req, res) => {
+router.delete('/:id', attachBearer, jwtAuth, (req, res) => {
+  let charList = [];
+  console.log("params id", req.params.id);
   User
+  .findById(req.params.id)
+  .then(user=> {
+    console.log("made it this far", user);
+    charList = user.characters
+  })
+  .then(()=>{
+    User
     .findByIdAndRemove(req.params.id)
     .then(() => {
       console.log(`Deleted blog user with id \`${req.params.id}\``);
+      charList.forEach(char=>{
+        Character
+        .findByIdAndRemove(char.id)
+      })
+    })
+    .then(()=> {
+      console.log("Deleted associated characters");
       res.status(204).end();
     })
-    .catch(err => {
-      console.error(err);
-      res.status(500).json({ error: 'something went terribly wrong' });
-    });
+  })
+  .catch(err => {
+    console.error(err);
+    res.status(500).json({ error: 'something went terribly wrong' });
+  });
 });
 
 

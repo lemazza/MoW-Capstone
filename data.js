@@ -220,7 +220,7 @@ exports.data = {
           name: "Serious weapons (pick one)",
           type: "radio",
           options: [
-            "Assault rifle (3-harm far area loud reload",
+            "Assault rifle (3-harm far area loud reload)",
             "Grenade launcher (4-harm far area messy loud reload)",
             "Sniper rifle (4-harm far)",
             "Grenades (4-harm close area messy loud)",

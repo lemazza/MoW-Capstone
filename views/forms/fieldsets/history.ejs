@@ -9,11 +9,13 @@ var templateData = (typeof templateData != 'undefined') ? templateData : { };
 <% 
 let options = templateData.options || {};
 options.forEach((option, index)=>{
+  let histCheck = (character.class && character[character.class].history[index])? "checked" : "";
+  let histName = (character.class && character[character.class].history[index])? character[character.class].history[index] : ""
 %> 
 
   <label>
-    <input type="<%=templateData.type%>" name="<%=templateData.className%>[<%=templateData.module%>][<%=option.slice(0,25)%>]" value="true" >
-    <input type="text" name="<%=templateData.className%>[<%=templateData.module%>][<%=option.slice(0,25)%>][name]">
+    <input type="<%=templateData.type%>" name="<%=templateData.className%>[<%=templateData.module%>][<%=index%>]" value="<%=index%>" <%=histCheck%> >
+    <input type="text" name="<%=templateData.className%>[<%=templateData.module%>][<%=index%>]" value="<%=histName%>">
     <%=option%>
   </label><br>
 

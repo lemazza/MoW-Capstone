@@ -1,7 +1,8 @@
 const INVALID_USER_TOKEN = null;
 
 function bearerAJAX(options){
-    let authToken = localStorage.getItem('authToken') || "invalid Token"
+    let cookies = cookieParser()
+    let authToken = cookies.authToken || "invalid Token"
     if( !options.headers ){
         options.headers = {};
     }
@@ -29,6 +30,16 @@ function putBearerJSON(url, updateData, successCallback, failureCallback){
     bearerAJAX({
       url, 
       type: "POST",
+      dataType: "json",
+      data,
+      success: successCallback
+    }).fail(failureCallback);    
+}
+
+function deleteBearerJSON(url, updateData, successCallback, failureCallback){
+    bearerAJAX({
+      url, 
+      type: "DELETE",
       dataType: "json",
       data,
       success: successCallback

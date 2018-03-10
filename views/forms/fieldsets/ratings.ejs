@@ -10,9 +10,11 @@ var templateData = (typeof templateData != 'undefined') ? templateData : { };
 let options = templateData.options || {};
 options.forEach((option, index)=>{
   let joinedOpts = option.join(", ");
+  let charRatings = character.class? character[character.class].ratings : "";
+  let rateChecked = (Number(charRatings) === index)? "checked" : "";
 %>
  
-  <label><input type="<%=templateData.type%>" name="<%=templateData.className%>[<%=templateData.module%>]" value="<%=index%>"><%=joinedOpts%></label><br>
+  <label><input type="<%=templateData.type%>" name="<%=templateData.className%>[<%=templateData.module%>]" value="<%=index%>" <%=rateChecked%> ><%=joinedOpts%></label><br>
 
 <% 
 })
