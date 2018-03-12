@@ -29,9 +29,9 @@ function postBearerJSON(url, data, successCallback, failureCallback){
 function putBearerJSON(url, updateData, successCallback, failureCallback){
     bearerAJAX({
       url, 
-      type: "POST",
+      type: "PUT",
       dataType: "json",
-      data,
+      data: updateData,
       success: successCallback
     }).fail(failureCallback);    
 }

@@ -34,7 +34,7 @@
       <fieldset>
         <legend>Choose a Name and Class</legend>
         <label>Character Name:<input type="text" name="charName" value="<%=charName%>"></label><br>
-        <label>Choose Image: <input type="text" placeholder="paste an image url" name="characterImage" value="<%=charName%>"></label><br>
+        <label>Choose Image: <input type="text" placeholder="paste an image url" name="characterImage" value="<%=charImg%>"></label><br>
         <label>Class:</label><br>
           <% 
             for(let i = 0; i < Object.keys(data).length; i++) {
@@ -77,7 +77,7 @@
           <label>Whenever you roll and get a total of 6 or less, or when a move tells you to, mark an experience box.<br>
           When you have filled all five experience boxes, you level up. Erase
           the marks and pick an improvement<br>
-            <input type="number" name="<%=charExp%>" value="0" min="0" max="5" step="1">
+            <input type="number" name="experience" value="<%=charExp%>" min="0" max="5" step="1">
           </label>
       </fieldset>
 
@@ -140,10 +140,14 @@
           };
         });
           %> </div> <%   
-    }); %>
+    }); 
 
 
-    <button type="submit">Submit</button>
+    let submitType = (character.class)? "put-button" : "post-button"
+    %>
+
+
+    <button id="<%=submitType%>" type="submit">Submit</button>
   </form>
 
   </main>

@@ -16,6 +16,11 @@ function charCreateSuccess(res){
   window.location.replace(`character/${res.id}`)
 }
 
+function charPutSuccess(res){
+  console.log('succes', res)
+  window.location.href = `../${res.id}`
+}
+
 function charCreateFailure(jqxhr, statusCode, statusText){
   console.log('error statuscode is', statusCode);
   console.log('error statustext is', statusText );
@@ -43,6 +48,15 @@ function cookieParser () {
 }
 
 
+function sliceCharId (url) {
+  let charIndex = url.indexOf('character');
+  let editIndex = url.indexOf('/edit');
+  let str = url.slice(charIndex+10, editIndex);
+  return str
+}
+
+
+
 function watchSubmit() {
 
 //on submit take all form data and post to characters
@@ -53,9 +67,18 @@ function watchSubmit() {
     const formData = $(this).serializeJSON({useIntKeysAsArrayIndex: true, parseBooleans: true});
     let userId = cookies.userId || INVALID_USER_TOKEN;
     formData.creator= userId;
-      
-    postBearerJSON('/api/characters', formData, charCreateSuccess, failureRedirectFn("/characters"))  
     
+    if ($('#put-button').length) {
+      let charId = sliceCharId(window.location.href);
+      let putUrl = '/api/characters/' + charId;
+      formData.id = charId;
+      formData.name = formData.charName;
+      formData.class = formData.classType;
+      formData.image = formData.characterImage;
+      putBearerJSON(putUrl, formData, charPutSuccess, failureRedirectFn(`../${charId}`))  
+    } else {
+      postBearerJSON('/api/characters', formData, charCreateSuccess, failureRedirectFn("/characters"))
+    }
   })
 }
 

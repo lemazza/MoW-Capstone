@@ -1,6 +1,5 @@
 const express = require('express');
 const mongoose = require('mongoose')
-const morgan = require('morgan')
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 const passport = require('passport');
@@ -14,7 +13,6 @@ const {Character, User} = require('./models');
 const jwtAuth = passport.authenticate('jwt', { session: false });
 
 
-router.use(morgan('common'));
 router.use(bodyParser.json());
 
 //test text
@@ -86,7 +84,10 @@ router.post('/', jwtAuth, (req, res) => {
     });
 
 });
-
+function attachBearer(req, res, next) {
+  if (!(req.headers.authorization)) req.headers.authorization = `Bearer ${req.cookies.authToken}`
+  next();
+}
 
 router.put('/:id', jwtAuth, (req, res) => {
   if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
@@ -94,25 +95,25 @@ router.put('/:id', jwtAuth, (req, res) => {
       error: 'Request path id and request body id values must match'
     });
   }
-
+  console.log("body", req.body);
+    console.log("MADE IT HERE");
   const updated = {};
-  const updateableFields = ['charName', 'description', 'image', 'classType', 'charm', 'cool', 'sharp', 'tough', 'weird', 'luck', 'harm', 'experience', 'gear', 'moves', 'public'];
+  const updateableFields = ['name', 'description', 'image', 'class', 'experience', 'harm', 'Spooky', 'Divine', 'Professional', 'luck', 'public'];
   updateableFields.forEach(field => {
     if (field in req.body) {
       updated[field] = req.body[field];
     }
   });
 
+    console.log("so far so good!!!!")
+    console.log("UPDATED:", updated)
   Character
   .findByIdAndUpdate(req.params.id, { $set: updated }, { new: true })
-  .then(updatedcharacter => res.status(200).json(updatedcharacter.serialize()))
+  .then(updatedcharacter => res.json(updatedcharacter.serialize()))
   .catch(err => res.status(500).json({ message: 'Something went wrong' }));
 });
 
-function attachBearer(req, res, next) {
-  req.headers.authorization = `Bearer ${req.cookies.authToken}`
-  next();
-}
+
 
 router.delete('/:id', attachBearer, jwtAuth, (req, res) => {
   Character

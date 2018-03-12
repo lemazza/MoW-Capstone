@@ -69,7 +69,6 @@ router.get('/:username', jwtAuth, (req, res) => {
 router.post('/', jsonParser, (req, res) => {
   const requiredFields = ['email', 'userName', 'password'];
   const missingField = requiredFields.find(field => !(field in req.body));
-  console.log(req.body);
   if (missingField) {
     return res.status(422).json({
       code: 422,
@@ -154,8 +153,7 @@ router.post('/', jsonParser, (req, res) => {
   // before this
   firstName = firstName.trim();
   lastName = lastName.trim();
-  console.log('this is userName', userName);
-  console.log('req body', req.body);
+
 
   return User.find({userName})
     .count()
@@ -173,8 +171,6 @@ router.post('/', jsonParser, (req, res) => {
       return User.hashPassword(password);
     })
     .then(hash => {
-      console.log(hash);
-      console.log('userName is', userName);
       return User.create({
         userName: userName,
         password: hash,
@@ -269,18 +265,16 @@ router.put('/:id', jwtAuth, (req, res) => {
 
 router.delete('/:id', attachBearer, jwtAuth, (req, res) => {
   let charList = [];
-  console.log("params id", req.params.id);
   User
   .findById(req.params.id)
   .then(user=> {
-    console.log("made it this far", user);
     charList = user.characters
   })
   .then(()=>{
     User
     .findByIdAndRemove(req.params.id)
     .then(() => {
-      console.log(`Deleted blog user with id \`${req.params.id}\``);
+      console.log(`Deleted user with id \`${req.params.id}\``);
       charList.forEach(char=>{
         Character
         .findByIdAndRemove(char.id)

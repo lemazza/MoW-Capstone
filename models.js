@@ -127,7 +127,7 @@ const characterSchema = mongoose.Schema({
     moves: Object,
     improvements: Object,
     advancedImprovements: Object,
-    classSpecific: Object,
+    classSpecific: Object
   }
 })
      

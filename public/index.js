@@ -55,7 +55,7 @@ function formDisplay () {
 
 function loggedInDisplay(userName, userId) {
   return `
-    <p>Logged in as <a href="user/${userId}" class="userName-text">${userName}</a></p>
+    <span>Logged in as <a href="user/${userId}" class="userName-text">${userName}</a></span>
     <button class="logout-button">Log Out</button>
   `
 }
@@ -75,7 +75,8 @@ function checkLogIn () {
   if (userName) {
     htmlOutput = loggedInDisplay(userName, userId)
   } else {
-    htmlOutput = formDisplay()
+    htmlOutput = 'Please <a href="/" alt="login page">Log In</a>'
+    //htmlOutput = formDisplay()
   }
   $('#login').html(htmlOutput);
 }
@@ -97,7 +98,7 @@ function watchLogOut () {
 
 
 function watchLogIn () {
-  $('#login').on("submit", ".login-form", function(event) {
+  $('#login-form').submit(function(event) {
     event.preventDefault();
     let LoginData = {
       userName: $('input[name="userName"]').val(),
@@ -115,7 +116,7 @@ function watchLogIn () {
         document.cookie = `authToken=${data.authToken}` 
         document.cookie = `userName=${LoginData.userName}` 
         document.cookie = `userId=${data.userId}` 
-        location.reload();
+        location.replace(`user/${data.userId}`);
       }
     })
   })
