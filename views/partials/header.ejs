@@ -2,8 +2,9 @@
     <a href="/"><h1>Hunters of the Week</h1></a>
     <h2><%=title%></h2>
     <nav class="clearfix">
+      <%if (typeof homepage === "undefined") {%>
       <div class="float-right" id="login">
       </div>
-
+      <%}%>
     </nav>
   </header>

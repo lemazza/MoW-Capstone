@@ -1,1 +1,44 @@
-//new user
+<%- include('partials/head')%>
+
+<body>
+<div class="container">
+
+<%- include('partials/header', {title: 'Create New User'})%>
+
+  <main>
+    <form>
+      <legend>Create New User</legend>
+      <div class="form-group">
+        <label for="fname">First Name: </label>
+          <input class="form-control" name="fname" id="fname" type="text">
+      </div>
+
+      <div class="form-group">
+        <label for="lname">Last Name: </label>
+          <input class="form-control" name="lname" id="lname" type="text">
+      </div>
+
+      <div class="form-group">
+        <label for="email">email: </label>
+          <input class="form-control" name="email" id="email" type="email">      
+      </div>
+
+      <div class="form-group">
+        <label for="uname">username: </label>
+        <input class="form-control" name="uname" id="uname" type="text">
+      </div>
+
+      <div class="form-group">
+        <label for="pwd">password: </label>
+          <input class="form-control" name="pwd" id="pwd" type="password">
+      </div>
+
+      <button type="submit">Submit</button>
+    </form>
+  
+  </main>
+
+</body>
+<script type="text/javascript" src="newuser.js"></script>
+</html>
+

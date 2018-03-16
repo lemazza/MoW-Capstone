@@ -24,4 +24,4 @@ $(randomHunter)
 //from common
 $(watchLogIn);
 $(watchLogOut);
-$(checkLogIn);
+$(checkLogIn('main'));

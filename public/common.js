@@ -72,17 +72,22 @@ function delete_cookie( name ) {
   document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/';
 }
 
-function formDisplay () {
+function formDisplay (main) {
+  let inline = (main=== "main")? "" : 'class="form-inline"';
+  let createNew = (main=== "main")? '<a href="new-user">Create new user</a>' : "";
   return `
-    <form id="login-form">
-      <legend>Log in or create an account</legend>
-      <label>user name</label>
-      <input type="text" name="userName" required>
-      <label>password</label>
-      <input type="password" name="password" required>
+    <form id="login-form" ${inline}>
+      <div class="form-group">
+        <label for="userName">username</label>
+        <input class="form-control" type="text" name="userName" required>
+      </div>
+      <div class="form-group">
+        <label>password</label>
+        <input class="form-control" type="password" name="password" required>
+      </div>
       <button class="btn" type="submit">Log In</button>
     </form>
-    <a href="newuser.html">Create new user</a>
+    ${createNew}
   `
 }
 
@@ -94,7 +99,7 @@ function loggedInDisplay(userName, userId) {
 }
 
 
-function checkLogIn () {
+function checkLogIn (main) {
   let cookies = cookieParser();
   let userName = cookies.userName;
   let userId = cookies.userId;
@@ -107,7 +112,7 @@ function checkLogIn () {
   if (userName) {
     htmlOutput = loggedInDisplay(userName, userId)
   } else {
-    htmlOutput = formDisplay()
+    htmlOutput = formDisplay(main)
     //htmlOutput = formDisplay()
   }
   $('#login').html(htmlOutput);

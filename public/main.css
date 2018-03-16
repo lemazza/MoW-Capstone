@@ -7,12 +7,16 @@
   font-style: normal;
 }
 
-body {
+body { 
+
   background-color: #342b49;
-  background-image: url('images/spooky-house.jpeg');
-  background-repeat: no-repeat;
+  background: url('images/spooky-house.jpeg') no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
   background-size: cover;
 }
+
 
 .container {
   background-color: white;

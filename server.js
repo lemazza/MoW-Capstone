@@ -24,15 +24,7 @@ const charactersRouter = require('./charactersRouter');
 const app = express();
 
 
-app.get('/character-creator.js', (req, res)=>{
-  fs.readFile(__dirname + '/public/character-creator.js', (err, contents) =>{
-    if (err) throw err;
-    let content = `const DATA = ${JSON.stringify(data)};\n
-    ${contents}`;
-    res.set('Content-Type', 'text/javascript');
-    res.send(content);
-  })
-})
+
 
 
 //test
@@ -50,6 +42,10 @@ const jwtAuth = passport.authenticate('jwt', { session: false });
 app.get('/', function(req,res) {
     res.render('index', {data: data})
 });
+
+app.get('/new-user', (req, res) => {
+  res.render('new-user', {data: data});
+})
 
 app.use(cookieParser());
 app.use(express.static('public'));
@@ -70,7 +66,15 @@ function renderCharacterCreator(req, res){
 }
 
 
-
+app.get('/character-creator.js', (req, res)=>{
+  fs.readFile(__dirname + '/public/character-creator.js', (err, contents) =>{
+    if (err) throw err;
+    let content = `const DATA = ${JSON.stringify(data)};\n
+    ${contents}`;
+    res.set('Content-Type', 'text/javascript');
+    res.send(content);
+  })
+})
 app.get('/character-maker', renderCharacterCreator);
 
 
@@ -117,6 +121,10 @@ function attachBearer(req, res, next) {
   req.headers.authorization = `Bearer ${req.cookies.authToken}`
   next();
 }
+
+app.get('newuser', (req, res) => {
+  res.render('new-user', {data: data});
+})
 
 app.get('/user/edit', attachBearer, jwtAuth, (req, res)=>{
   console.log("req.cookie is :", req.cookie);
