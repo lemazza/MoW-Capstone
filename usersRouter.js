@@ -18,11 +18,13 @@ const jwtAuth = passport.authenticate('jwt', { session: false });
 router.use(bodyParser.json());
 
 function attachBearer(req, res, next) {
-  console.log("req.cookies", req.cookies);
-  console.log("authToken", req.cookies.authToken)
+  if(!(req.headers.authorization)) {
   req.headers.authorization = `Bearer ${req.cookies.authToken}`
+  }
+
   next();
 }
+
 /*
 router.get('/', (req, res) => {
   User
@@ -246,7 +248,7 @@ router.put('/:id', jwtAuth, (req, res) => {
       error: 'Request path id and request body id values must match'
     });
   }
-
+  console.log('PUT REQUEST')
   const updated = {};
   const updateableFields = ['email', 'userName', 'password', 'firstName', 'lastName', 'characters'];
   updateableFields.forEach(field => {

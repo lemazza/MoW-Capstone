@@ -100,3 +100,12 @@ function watchDelete() {
 $(watchDelete)
 $(watchClassChange);
 $(watchSubmit);
+
+//bootstrap
+$('.carousel').carousel()
+
+
+//from common
+$(watchLogIn);
+$(watchLogOut);
+$(checkLogIn);

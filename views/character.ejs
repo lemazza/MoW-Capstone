@@ -1,98 +1,127 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>MoW Hunter Maker</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Create a Character for the roleplaying game Monster of the Week">
-  <meta name="keywords" content="Monster of the Week, MoW, Monster, RPG, Apocolypse World">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="/js/jquery.serializejson.js"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.css" rel="stylesheet">
-  <link rel="stylesheet" href="../main.css">
-</head>
+<%- include('partials/head')%>
 
 <body>
-  <header>
-    <h1>Hunters of the Week</h1>
-  </header>
+<div class="container">
+
+<%- include('partials/header', {title: 'Character Page'})%>
 
 <%  let charClass = character[character.class];
+    let charImg = (character.image)? character.image : '/images/default-char.jpg'
+  
 %>
-
-  <main>
-    <h2>Hunter Page</h2>
-
-    <nav>
-      <a href="../user/<%=character.creator.id%>"><%=character.creator.userName%></a>
-    </nav>
-
-    <div id="character-box">
+  <main id="char-page">
       <header>
-        <image src="<%=character.image%>" alt="<%=character.name%>"></image>
-        <h3><%=character.name%></h3>
-        <h4><%=character.class%></h4>
+        <div class="row">
+          <div class="col-sm-4">
+            <image class="char-img" src="<%=charImg%>" alt="<%=character.name%>"></image>
+          </div>
+          <div class="col-sm-8">
+            <h3><%=character.name%></h3>
+            <h4 class="className">The <%=character.class%></h4>
+            <div id="char-update">
+                <a href="<%=character.id%>/edit">Update/Delete Character</a>
+            </div>
+          </div>
+        </div>
       </header>
 
       <div>
         <h4>Ratings</h4>
-        <dl>
+        <dl class="row">
 <%        let ratingsArray = data[character.class].ratings.options[charClass.ratings]
           ratingsArray.forEach(rating=>{
             let category = rating.slice(0,5).trim();
-            let rateValue = rating.slice(-3);%>
-            <dt><%=category%></dt>
-            <dd><%=rateValue%></dd>
+            let rateValue = rating.slice(-3);
+            let BorderColor
+            switch (rateValue[0]) {
+              case "+":
+                BorderColor = "border-success";
+                break;
+              case "-":
+                BorderColor = "border-danger";
+                break;
+              case "=":
+                BorderColor = "";
+            }
+            rateValue = (rateValue[0]==="=")? 0 : rateValue;%>
+
+            <div class="col">
+              <dt class="text-center"><%=category%></dt>
+              <dd >
+                <div class="text-center">
+                  <%=rateValue%>
+                </div>
+              </dd>
+            </div>
 <%        })%>
         </dl>
       </div>
 
+      <div class="row">
+        <div class="col-lg" id="char-luck">
+          <h4>Luck</h4>
+          <p>You can mark off a Luck box to either change a roll you just made to a
+  12, as if you had rolled that; or change a wound you have just taken to
+  count as just 0-harm. If your Luck boxes all get filled, you’ve run out
+  of good luck.</p>
+  <%-      include('partials/checkboxes', {
+              numBoxes: 7, 
+              numChecks: character.luck,
+              labelStart: 'Okay',
+              labelEnd: 'Doomed',
+              useButtons: false
+            })%>
+        </div>
 
-      <div id="char-luck">
-        <h4>Luck</h4>
-        <p><%=character.luck%></p>
+
+        <div class="col-lg" id="char-harm">
+          <h4>Harm</h4>
+          <p>When you suffer harm, mark off the number of boxes equal to harm
+  suffered. When you reach four harm, tick “Unstable.”</p>
+  <%-     include('partials/checkboxes', {
+            numBoxes: 7,
+            numChecks: character.harm.number,
+            labelStart: 'Okay',
+            labelEnd: 'Dying',
+            useButtons: false
+          })%>
+<%        let harmCheck= (character.harm.number < 4)? "" : "checked";%>
+          <br><div class="row form-check form-check-inline">
+              <label class="col">Harm: </label><input type="checkbox" class="col form-check-input larger-checkbox" readonly disabled="disabled" <%=harmCheck%>>
+          </div>
+        </div>
+      
+        <div class="col-lg" id="char-experience">
+          <h4>Leveling Up</h4>
+          <p>Whenever you roll and get a total of 6 or less, or when a move tells you to, mark an experience box.</p>
+          <p>When you have filled all five experience boxes, you level up. Erase the marks and pick an <a href="#char-improvements">Improvement</a>.</p>
+          <p> After you have leveled up five times, you qualify for <a href="#char-adv-improvements">Advanced Improvements</a> in addition to these.</p>
+        <%-include('partials/checkboxes', {
+          numBoxes: 5,
+          numChecks: character.experience,
+          labelStart: 'Experience: ',
+          labelEnd: '',
+          useButtons: false
+        })%>
+        </div>
+
       </div>
 
+      <div class="row">
+      
+        <div class="col-md" id="char-look">
+          <h4>Look</h4>
+          <dl>
+  <%        let lookKeys = Object.keys(charClass.look);
+            for (let i =0; i < lookKeys.length; i++) {
+              let key = Object.keys(charClass.look)[i]%>
+            <dt><%=key%></dt>
+            <dd><%=charClass.look[key]%></dd>
+  <%        }%>
+          </dl>
+        </div>
 
-      <div id="char-harm">
-        <h4>Harm</h4>
-        <p><%=character.harm.number%></p>
-      </div>
-
-
-      <div id="char-experience">
-        <h4>Experience</h4>
-        <p><%=character.experience%>
-      </div>
-
-
-      <div id="char-look">
-        <h4>Look</h4>
-        <dl>
-<%        let lookKeys = Object.keys(charClass.look);
-          for (let i =0; i < lookKeys.length; i++) {
-            let key = Object.keys(charClass.look)[i]%>
-          <dt><%=key%></dt>
-          <dd><%=charClass.look[key]%></dd>
-<%        }%>
-        </dl>
-      </div>
-
-
-      <div id="char-moves">
-        <h4>Moves</h4>
-        <dl>
-<%        charClass.moves.forEach(move=>{
-            if(move|| move===0) {%>
-              <dt><%=data[character.class].moves.options[move].name%></dt>
-              <dd><%=data[character.class].moves.options[move].description%></dd>
-<%          } 
-          }) %>
-        </dl>
-      </div>
-
-
-      <div id="char-gear">
+        <div class="col-md" id="char-gear">
         <h4>Gear</h4>
 <%      let gearArray = Object.keys(charClass.gear)
         gearArray.forEach(itemType=>{
@@ -109,14 +138,12 @@
               </ul>
 
 <%          } else {%>
-              <p><%=options%><p>
+              <p><%=options%></p>
 <%          }%>
 <%        })%>
+        </div>
 
-      </div>
-
-
-      <div id="char-history">
+        <div class="col-md" id="char-history">
         <h4>History</h4>
         <dl>
 <%      charClass.history.forEach((person, index)=>{
@@ -128,15 +155,36 @@
         </dl>
       </div>
 
+    </div>
+
+      <div id="char-moves">
+        <h4>Moves</h4>
+        <dl>
+<%        charClass.moves.forEach(move=>{
+            if(move|| move===0) {%>
+              <dt><%=data[character.class].moves.options[move].name%></dt>
+              <dd><%=data[character.class].moves.options[move].description%></dd>
+<%          } 
+          }) %>
+        </dl>
+      </div>
+
+
+      
+
+
+      
+
 
       <div id="char-class-spec">
+
 
 <%-   fileExists( __dirname +"/views/partials/classSpec.ejs") && 
       include ('partials/classSpec.ejs', {data: data, character: character})%>
       </div>
 
-
-      <div id="char-improvements">
+    <div class="row">
+      <div class="col-md" id="char-improvements">
         <h4>Improvements</h4>
         <ul>
 <%        let impArray = charClass.improvements.filter(Number)
@@ -147,7 +195,7 @@
       </div>
 
 
-      <div id="char-improvements">
+      <div class="col-md" id="char-adv-improvements">
         <h4>Advanced Improvements</h4>
         <ul>
 <%        let advImpArray = charClass.advancedImprovements.filter(Number)
@@ -156,15 +204,13 @@
 <%       })%>
         </ul>
       </div>
+    </div>
 
-      <div id="char-update">
-        <h4>Update/Delete Character</h4>
-        <a href="<%=character.id%>/edit">Update/Delete Character</a>
-      </div>
+      
       
 
-    </div>
   </main>
-
+</div>
+  <script type="text/javascript" src="../common.js"></script>
   <script type="text/javascript" src="../char-page.js"></script>
 </body>

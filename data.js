@@ -3,6 +3,7 @@ exports.data = {
   Spooky: {
     class: "The Spooky",
     flavorText: "I can do things, things that normal people can’t. But there’s a price—I haven’t paid it in full, yet, but the bill’s gonna come due soon. It’s best I don’t tell you any more. You get too close, you’ll get hurt.",
+    classDescription: "has psychic or magical powers. These powers are strange and sinister ... and not completely under the Spooky’s control. E.g. Sam Winchester from Supernatural; Willow from earlier seasons of Buffy the Vampire Slayer.",
     look: {
       _label: "Choose Your Look",
       options:  {
@@ -30,7 +31,7 @@ exports.data = {
           ["Charm + 1", "Cool = 0", "Sharp + 1", "Tough - 1", "Weird + 2"],
           ["Charm - 1", "Cool + 1", "Sharp = 0", "Tough + 1", "Weird + 2"],
           ["Charm + 2", "Cool = 0", "Sharp - 1", "Tough - 1", "Weird + 2"],
-          ["Charm = 0", "Cool - 0", "Sharp + 1", "Tough + 1", "Weird + 2"],
+          ["Charm = 0", "Cool - 1", "Sharp + 1", "Tough + 1", "Weird + 2"],
           ["Charm - 1", "Cool - 1", "Sharp + 2", "Tough = 1", "Weird + 2"]
       ]
     },
@@ -127,6 +128,7 @@ exports.data = {
    Professional: {
     class: "The Professional",
     flavorText: 'It’s kind of strange when your regular 9-to-5 job is to hunt down monsters. Still, that’s the job I took on when I joined this outfit. It pays well, and the benefits are good. Like they say “You don’t have to be crazy to work here, but it sure helps!”',
+    classDescription: "you work for an agency that hunts monsters. The Professional is good in a fight, and a good team player. E.g. Riley and the Initiative from Buffy the Vampire Slayer; Olivia Dunham from Fringe.",
     look: {
       _label: "Choose Your Look",
       options:  {
@@ -292,6 +294,7 @@ exports.data = {
   Divine: {
     class: "The Divine",
     flavorText: "I am the Light, the Sword. I am sent to defend the meek from Darkness. All Evil fears me, for I am its end.",
+    classDescription: "an agent of a higher power, with a mission to fulfill. The Divine is very tough and has been granted holy powers. E.g. Castiel from Supernatural; Michael Carpenter from The Dresden Files.",
     look: {
       _label: "Choose Your Look",
       options:  {

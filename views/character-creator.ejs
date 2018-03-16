@@ -1,27 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>MoW Hunter Maker</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Create a Character for the roleplaying game Monster of the Week">
-  <meta name="keywords" content="Monster of the Week, MoW, Monster, RPG, Apocolypse World">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="/js/jquery.serializejson.js"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.css" rel="stylesheet">
-  <link rel="stylesheet" href="main.css">
-</head>
+<%- include('partials/head')%>
+
 <body>
-  <header>
-    <h1>Monster of the Week Character Creator</h1>
-  </header>
+<div class="container">
+
+<%- include('partials/header', {title: 'Character Maker'})%>
 
   <main>
-    <h2>Character Creator</h2>
-    <form>
 
+    
+  
+    
+    
+
+  
+
+
+
+    <form>
+     
       <% if(character.class){%>
-        <button id="delete-button" type="button" data-charId="<%=character.id%>">Delete Character</button>
+        <!--div class="col">
+          <h4>Delete Character</h4>
+          <p><span class="text-danger">WARNING: </span>Clicking this button will permanently delete this character.</p>
+          <button class="btn btn-danger"id="delete-button" type="button" data-charId="<%=character.id%>">Delete Character</button>
+        </div-->
       <%}
         let charName = character.name || "";
         let charImg = character.image || "";
@@ -31,10 +33,24 @@
         let charUnstable = (character.harm && character.harm.unstable )? "checked" : "";
         let charExp = character.experience  || 0;
       %>
+      <div id="fieldTabs" class="carousel slide" >
+
+    
+
+  <!-- The slideshow -->
+    <div class="carousel-inner" data-interval="false">
+      <div class="carousel-item">
       <fieldset>
         <legend>Choose a Name and Class</legend>
-        <label>Character Name:<input type="text" name="charName" value="<%=charName%>"></label><br>
-        <label>Choose Image: <input type="text" placeholder="paste an image url" name="characterImage" value="<%=charImg%>"></label><br>
+        <div class="form-group">
+          <label for="charName">Character Name:</label>
+          <input class="form-control" type="text" name="charName" value="<%=charName%>">
+        </div>
+        <div class="form-group">
+          <label for="characterImage">Choose Image: </label>
+          <input class="form-control" type="text" placeholder="paste an image url" name="characterImage" value="<%=charImg%>"></label><br>
+        </div>
+        <div class="row">
         <label>Class:</label><br>
           <% 
             for(let i = 0; i < Object.keys(data).length; i++) {
@@ -42,46 +58,67 @@
               classCheck = (key === character.class)? "checked" : "";
           %>
 
-            <label>
-              <input value="<%= key %>" type="radio" name="classType" <%=classCheck%>>
-              <%= data[key].class %>
-            </label>
+            <div class="col-md">
+              <label>
+              <input  class="float-left" value="<%= key %>" type="radio" name="classType" <%=classCheck%>>
+              <dt><%= data[key].class %></dt><dd><%=data[key].classDescription%></dd></label>
+            </div>
 
           <%}%>
+        </div>
       </fieldset>
+      </div>
 
+      <div class="carousel-item active">
       <fieldset>
         <legend>Luck</legend>
           <label>You can mark off a Luck box to either change a roll you just made to a 12, as if you had rolled that; or change a wound you have just taken to
             count as 0-harm, no matter how bad it was. If all your Luck boxes get filled, you’ve run out of good luck.<br>
-            <input type="number" name="luck" value="<%=charLuck%>" min="0" max="7" step="1">
+            <input class="form-control" type="number" name="luck" value="<%=charLuck%>" min="0" max="7" step="1">
           </label>
+          <%-include('partials/checkboxes', {
+                numBoxes: 7,
+                numChecks: charLuck,
+                labelStart: "Okay",
+                labelEnd: "Doomed",
+                useButtons: true
+          })%>
       </fieldset>
+      </div>
 
+      <div class="carousel-item">
       <fieldset>
         <legend>Harm</legend>
           <label>When you suffer harm, mark off the number of boxes equal to harm
           suffered. When you reach four harm, tick “Unstable.”<br>
-            <input type="number" name="harm[number]" value="<%=charHarm%>" min="0" max="7" step="1">
+            <input class="form-control" type="number" name="harm[number]" value="<%=charHarm%>" min="0" max="7" step="1">
           </label><br>
           <label>Unstable
-            <input type="checkbox" name="harm[unstable]" value="true" <%=charUnstable%> ><br>
+            <input class="form-control" type="checkbox" name="harm[unstable]" value="true" <%=charUnstable%> ><br>
             (Unstable injuries will worsen as time passes)
           </label>
       </fieldset>
-      </fieldset>
+      </div>
 
-
+      <div class="carousel-item">
       <fieldset>
         <legend>Leveling Up</legend>
           <label>Whenever you roll and get a total of 6 or less, or when a move tells you to, mark an experience box.<br>
           When you have filled all five experience boxes, you level up. Erase
           the marks and pick an improvement<br>
-            <input type="number" name="experience" value="<%=charExp%>" min="0" max="5" step="1">
+            <input class="form-control" type="number" name="experience" value="<%=charExp%>" min="0" max="5" step="1">
           </label>
       </fieldset>
+      </div>
+      <!-- Left and right controls -->
+  <a class="carousel-control-prev" href="#fieldTabs" data-slide="prev">
+    <span class="carousel-control-prev-icon"></span>
+  </a>
+  <a class="carousel-control-next" href="#fieldTabs" data-slide="next">
+    <span class="carousel-control-next-icon"></span>
+  </a>
 
-
+      </div>
 
  <% /** LOOP THROUGH CLASSES TO MAKE FIELDSETS FOR EACH MODULE **/ %>
         
@@ -89,7 +126,8 @@
         const ignoreKeys = ['class', 'flavorText', 'options', 'name', 'description'];
         Object.keys(data).forEach(function(className) {
             let hiddenDiv = (className === character.class)? "" : "hidden"
-          %> <div id="<%=className%>Form" class="classFields" <%=hiddenDiv%>> <% 
+          %>
+          <div id="<%=className%>Form" class="classFields" <%=hiddenDiv%>> <% 
 
           let charClass = data[className];
           Object.keys(charClass).forEach(function(classKey) {
@@ -131,26 +169,32 @@
                       }
               }
               let templateLocation = 'forms/fieldsets/' + templateData.module +".ejs";
-            
-            
-    
-         %> <%-fileExists( __dirname +"/views/" +templateLocation) &&
+          
+         %>
+
+         <div class="carousel-item"> 
+         <%-fileExists( __dirname +"/views/" +templateLocation) &&
              include (templateLocation, {templateData: templateData, character: character}) 
-            %> <%
+            %> 
+          </div>
+
+
+            <%
           };
         });
-          %> </div> <%   
+          %> </div>
+            </div> <%   
     }); 
 
 
     let submitType = (character.class)? "put-button" : "post-button"
     %>
-
-
-    <button id="<%=submitType%>" type="submit">Submit</button>
+  
+    <button class="btn" id="<%=submitType%>" type="submit">Submit</button>
   </form>
 
   </main>
+</div>
   <script type="text/javascript" src="/common.js"></script>
   <script type="text/javascript" src="/char-creator-submit.js"></script>
 </body>

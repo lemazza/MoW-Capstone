@@ -1,27 +1,6 @@
 
-function cookieParser () {
-  //finds cookies and returns an obj with key-value pairs
-  cookies = document.cookie.split('; ')
-    console.log(cookies);
-    let cookieObj = {}
-    cookies.forEach(cookie=>{
-      let halves = cookie.split("=");
-      cookieObj[halves[0]] = halves[1];
-    })
-    console.log("COOKIES!", cookieObj)
-    return cookieObj;
-}
-
-
-
-function delete_cookie( name ) {
-  document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-}
-
-
-
 function watchSubmit () {
-  $("form").submit(function(event) {
+  $("#edit-user").submit(function(event) {
     event.preventDefault();
 
     let cookies = cookieParser();
@@ -79,5 +58,11 @@ function watchDelete() {
   })
 }
 
+
 $(watchDelete);
 $(watchSubmit);
+
+//from common
+$(watchLogIn);
+$(watchLogOut);
+$(checkLogIn);

@@ -1,21 +1,74 @@
-h1 {
-  font-weight:  bold;
-  color: red;
+
+@font-face {
+  font-family: '3rd_manregular';
+  src: url('fonts/3rd_man-webfont.woff2') format('woff2'),
+       url('fonts/3rd_man-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
 }
 
+body {
+  background-color: #342b49;
+  background-image: url('images/spooky-house.jpeg');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.container {
+  background-color: white;
+}
+
+h1 {
+  font-family: '3rd_manregular';
+  color: purple;
+  font-size: 4rem;
+  background-color: white
+}
+
+h2 {
+  color: white;
+  background-color: navy;
+}
+
+nav {
+  background-color: #82933e;
+}
+
+
 .char-img-container {
-  height: 150px;
-  width: 150px;
-  border: 2px solid blue;
+  max-height: 150px;
+  min-height: 80px;
+
+  max-width: :150px;
+  min-width: 80px;
 }
 
 .char-img {
   display:  block;
   max-height: 100%;
   max-width:  100%;
-  margin: 0 auto;
+  margin: auto;
 }
 
-li {
-  font-weight: bold;
+.row {
+  margin-bottom:  1.5rem;
+}
+
+/*=============================================================
+CHAR PAGE
+==============================================================*/
+
+#char-page header h3 {
+  font-size: 4rem;
+}
+
+.className {
+  font-family: '3rd_manregular';
+  font-size:  3rem;
+}
+
+input.larger-checkbox
+{
+  width: 30px;
+  height: 30px;
 }

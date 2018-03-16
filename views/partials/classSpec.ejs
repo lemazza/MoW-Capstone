@@ -4,6 +4,8 @@
 
 <h4><%=dataCat._label%></h4>
 
+<%-   include('classFlavor', {charClass: character.class})%>
+
 <%// check for subcategories
 console.log("CLASS", charCat)
   console.log(typeof dataCat.options[0], "MIDDLE", dataCat.options);

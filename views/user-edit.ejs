@@ -1,44 +1,50 @@
-  <title>MoW Hunter Maker</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Create a Character for the roleplaying game Monster of the Week">
-  <meta name="keywords" content="Monster of the Week, MoW, Monster, RPG, Apocolypse World">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.css" rel="stylesheet">
-  <link rel="stylesheet" href="../main.css">
-</head>
+
+<%- include('partials/head')%>
+
 <body>
-  <header>
-    <h1>Monster of the Week Character Creator</h1>
-  </header>
-    <h2>Edit User</h2>
+<div class="container">
+<%- include('partials/header', {title: 'Edit User Info'})%>
+
 <%
   let fnameVal = user.firstName || "";
   let lnameVal = user.lastName || "";
   let emailVal = user.email || "";
 %>
+
   <main>
-    <button type="button" id="user-delete">Delete User</button>
-    <p>This will permanently delete <%=user.userName%> and all associated characters</p>
-    <form>
-      <legend>Edit <a href="./<%=user.id%>"><%=user.userName%>'s</a> Info</legend>
-      <label>First Name: 
-        <input id="fname" type="text" value="<%=fnameVal%>">
-      </label>
+  <div class="row">
+    <div class="col-sm">
+      <form id="edit-user">
+        <legend>Edit <strong><%=user.userName%></strong></legend>
+        <div class="form-group">
+          <label for="fname"> First Name: </label>
+          <input id="fname" class="form-control" name="fname" type="text" value="<%=fnameVal%>">
+        </div>
 
-      <label>Last Name: 
-        <input id="lname" type="text" value="<%=lnameVal%>">
-      </label>
-      
-      <label>email: 
-        <input id="email" type="email" value="<%=emailVal%>">
-      </label>
+        <div class="form-group">
+          <label for="lname">Last Name: </label>
+          <input id="lname" class="form-control" name="lname" type="text" value="<%=lnameVal%>">
+        </div>
 
-      <button type="submit">Submit</button>
-    </form>
-  
+        <div class="form-group">
+          <label for="email"> email: </label>
+          <input id="email" class="form-control" name="email" type="email" value="<%=emailVal%>">
+          
+        </div>
+        <button class="btn" type="submit">Submit</button>
+      </form>
+    </div>
+    <div class="col-sm">
+        <h4>Delete User</h4>
+        <p><span class="text-danger">WARNING: </span>This will permanently delete <span class="text-primary"><%=user.userName%></span> and all associated characters</p>
+        <button type="button" class="btn btn-danger" id="user-delete">Delete</button>
+    </div>
+  </div>
+
   </main>
+</div>
 
-</body>
+<script type="text/javascript" src="../common.js"></script>
 <script type="text/javascript" src="../edit-user.js"></script>
+</body>
 </html>

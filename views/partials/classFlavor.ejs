@@ -1,0 +1,29 @@
+<%//classFlavor
+    if (!(charClass)) return ""
+
+    switch (charClass) {
+      case 'Spooky':%>
+        <p>Your powers have an unsavory source, and sometimes you get tempted
+to do things you shouldn’t. These could be orders from whatever
+granted your power, or urges that bubble up from your subconscious.
+Something like that. Whatever it is, it’s unsettling.</p>
+       <p>The Keeper can ask you to do nasty things (in accordance with the
+tags), when your powers need you to. If you do whatever is asked,
+mark experience. If you don’t do it, then your powers are unavailable
+until the end of the mystery (or until you cave). As you mark off Luck
+boxes, these requests will get bigger and nastier.</p>
+<%    break;
+
+      case 'Divine':%>
+          <p>You have been put on Earth for a purpose:</p>
+<%    break;
+
+      case 'Professional':%>
+          <p>Decide who it is you work for. Are they a black-budget government
+department, a secret military unit, a clandestine police team, a private
+individual’s crusade, a corporation, a scientific team, or what?</p>
+<p>Is the Agency’s goal to: destroy monsters, study the supernatural,
+protect people, gain power, or something else?</p>
+<% 
+    }
+ %>

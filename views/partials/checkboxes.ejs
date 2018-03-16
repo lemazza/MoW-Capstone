@@ -1,0 +1,17 @@
+<%
+  if (!(numBoxes))  numBoxes = 0;
+  if (!(numChecks)) numChecks = 0;%>
+<div class="row form-check form-check-inline">
+  <label class="col"><%=labelStart%></label>
+<% if(useButtons) {%>
+  <button class="col" id="btn-minus">-1</button>
+  <%}%>
+<%  for (let i = 0; i < numBoxes; i++) {
+      let checkValue = (i < numChecks)? "checked" : "";%>
+      <input type="checkbox" class="col form-check-input larger-checkbox" readonly disabled="disabled" <%=checkValue%> >
+<%  }
+    if(useButtons) {%>
+  <button class="col" id="btn-plus">+1</button>
+  <%}%>
+  <label class="col"><%=labelEnd%></label>
+</div>

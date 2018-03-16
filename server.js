@@ -46,6 +46,11 @@ passport.use(jwtStrategy);
 
 const jwtAuth = passport.authenticate('jwt', { session: false });
 
+
+app.get('/', function(req,res) {
+    res.render('index', {data: data})
+});
+
 app.use(cookieParser());
 app.use(express.static('public'));
 //app.use('/api/campaigns', campaignsRouter);
@@ -63,6 +68,8 @@ function renderCharacterCreator(req, res){
 
   
 }
+
+
 
 app.get('/character-maker', renderCharacterCreator);
 

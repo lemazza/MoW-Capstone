@@ -1,87 +1,57 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>MoW Hunter Maker</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Create a Character for the roleplaying game Monster of the Week">
-  <meta name="keywords" content="Monster of the Week, MoW, Monster, RPG, Apocolypse World">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="/js/jquery.serializejson.js"></script>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.css" rel="stylesheet">
-  <link rel="stylesheet" href="../main.css" type="text/css">
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-
-</head>
+<%- include('partials/head')%>
 
 <body>
+<div class="container">
 
-
-  <nav class="navbar navbar-expand-sm navbar-light bg-faded">
-<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav-content" aria-controls="nav-content" aria-expanded="false" aria-label="Toggle navigation">
-<span class="navbar-toggler-icon"></span>
-</button>
-
-<!-- Brand -->
-<div id="login"></div>
-
-<!-- Links -->
-<div class="collapse navbar-collapse" id="nav-content">   
-<ul class="navbar-nav mr-auto">
-<li class="nav-item">
-<a class="nav-link" href="#">Link 1</a>
-</li>
-<li class="nav-item">
-<a class="nav-link" href="#">Link 2</a>
-</li>
-</ul>
-</nav>
-
-
-
-  <header>
-    <h1>Hunters of the Week</h1>
-  </header>
-
-
-
-
-
-
-
+<%- include('partials/header', {title: 'User Page'})%>
 
   <main>
-    <h2>User Page</h2>
-
-    <nav>
-      <a href="<%=user.id%>"><%=user.userName%></a>
-    </nav>
-    <h3>Hello, <%=user.name%></h3>
-
-    <div>
-      <h4>Characters</h4>
-      <a href="../character-maker" alt="Character Maker">Create New Character</a>
-      <ul>
-<%      user.characters.forEach(character=>{%>
-          <li>
+    <div class="row">
+      <div class="character-list-container col-5">
+        <h4>Characters</h4>
+        <ul class="list-group">
+<%      user.characters.forEach(character=>{
+          let charImg = (character.image)? character.image : '/images/default-char.jpg'%>
+          <!--li>
             <div class="char-img-container">
-                <image class="char-img" src="<%=character.image%>" alt="<%character.name%>"></image>
+                <image class="char-img" src="<%=charImg%>" alt="<%character.name%>"></image>
             </div>
             <h5><a href="/character/<%=character.id%>" alt="<%=character.name%> page"><%=character.name%></a></h5> 
             <p><%=character.class%></p>
+          </li-->
+          <li class="list-group-item list-group-item-action">
+              <h5><a href="/character/<%=character.id%>"><%=character.name%></a></h5>
+              <div class="row"> 
+                <div class="char-img-container col-sm-6">
+                  <a href="/character/<%=character.id%>"><img class="char-img" src="<%=charImg%>" alt="<%character.name%>"></a>
+                </div>
+                <div class="col-sm-6">
+                  Class: <%=character.class%>
+                </div>
+              </div>
           </li>
-<%      })%>
-      </ul>
-    </div>
 
-    <div>
-      <h4>Update User Info</h4>
-      <a id="edit-user" href="./edit">Update</a>
+<%      })%>
+        </ul>
+      </div>
+
+      <div class="col-7">
+        <h4>Create New Character</h4>
+        <a href="../character-maker" alt="Character Maker">Create New Character</a>
+
+        <h4>Update User Info</h4>
+        <a id="edit-user" href="./edit">Update</a>
+      </div>
     </div>
+    
+
+    
 
     
   </main>
+</div>
 
+  <script type="text/javascript" src="../common.js"></script>
   <script type="text/javascript" src="../user-page.js"></script>
 </body>
+</html>
