@@ -100,6 +100,7 @@ function generateUpdateCharacter (origCharId) {
   let unst = (harmNum > 5)? true : false;
   return {
     id: origCharId,
+    name: faker.name.firstName() + faker.name.lastName(),
     image: faker.image.avatar(),
     class: randomClass(),
     luck: randomNum(5),
@@ -150,9 +151,9 @@ function tearDownDb() {
 /*=====================================================================
   DEFINE USER API REQUESTS
 =====================================================================*/
-let userCreate = new Promise ((resolve, reject) => {
-  let newUser = generateFakeUser();
-  chai.request(app)
+function userCreate (newUser) {
+  newUser || (newUser = generateFakeUser());
+  return chai.request(app)
   .post('/api/users')
   .send(newUser)
   .then(function(res){
@@ -163,9 +164,9 @@ let userCreate = new Promise ((resolve, reject) => {
     resObj.user = userObj;
     resObj.res = res;
     //returns object with 2 keys.  'user' is the original user info, 'res' is the response
-    resolve(resObj);
+    return resObj;
   })
-})
+}
 
 
 function getAuthToken (resObj) {
@@ -197,16 +198,14 @@ function editUserInfo (resObj){
     id: resObj.user.id,
     headers: {'Content-Type': 'application/json'}
   };
-  User.findById(resObj.user.id).then(user=> console.log("user in DB", user))
   updateInfo.headers.authorization = "Bearer " + resObj.user.authToken;
-  console.log('resObj in editUserInfo', resObj.user);
+  resObj.updateInfo = updateInfo;
   return chai.request(app)
-  .put(`api/users/${resObj.user.id}`)
+  .put(`/api/users/${resObj.user.id}`)
   .set('Authorization', `Bearer ${resObj.user.authToken}`)
   .send(updateInfo)
   .then(res=>{
     resObj.res = res;
-    console.log("resObj.res in edit UserInfo", resObj.res);
     return resObj;
   })
   .catch(err=>{
@@ -243,7 +242,7 @@ function userPath() {
 
 describe('MoW API resources', function() {
   before(function(){
-    return runServer(TEST_DATABASE_URL);
+    return runServer(TEST_DATABASE_URL, 8080);
   });
   /*beforeEach(function(){
     return seedUsersCollection();
@@ -255,16 +254,13 @@ describe('MoW API resources', function() {
     return closeServer();
   });
 
-
-  
-
-  describe('User Experience', function() {
+/*
     //expect 201 status, json object with username, id, first and last,
     //check db for extra person
     describe('Create new User at POST Endpoint', function() {
       it('should add a new user', function() {
         let user
-        return userCreate.then(function(res) {
+        return userCreate().then(function(res) {
           user = res.user
           expect(res.res).to.have.status(201);
           expect(res.res).to.be.json;
@@ -290,7 +286,7 @@ describe('MoW API resources', function() {
       it('should return a jwt', function() {
         
         
-        return userCreate
+        return userCreate()
           .then(resObj=>{
             return getAuthToken(resObj)
           })
@@ -309,17 +305,21 @@ describe('MoW API resources', function() {
     describe('Update User', function() {
       it('should change user info', function() {
 
-        return userCreate
+        return userCreate()
         .then(resObj=> {
           return editUserInfo(resObj);
         })  
         .then(res => {
-          console.log("og user:", res.user, "res.body", res.res.body);
           assert.equal(res.res.status, 200);
           assert.typeOf(res.res.body, "object");
-          assert.containsAllKeys(res.res.body, ['id', 'name', 'email', 'userName', 'characters']);
-          assert.equal(res.res.body.email, updateInfo.email);
-          assert.equal(updateInfo.firstName + " " + updateInfo.lastName, res.body.name);
+          expect(res.res.body).to.have.all.keys('id', 'name', 'userName', 'characters');
+          assert.equal(res.updateInfo.firstName + " " + res.updateInfo.lastName, res.res.body.name);
+          User
+          .findById(res.res.body.id)
+          .then(user=>{
+            assert.equal(user.email, res.updateInfo.email);
+          })
+          .catch(err=> console.log("ERROR IN SHOULDCHANGEUSERINFO", err))
         })
       })
     })
@@ -328,7 +328,7 @@ describe('MoW API resources', function() {
     describe('Character', function() {
       it('User can create a character', function() {
 
-        return userCreate
+        return userCreate()
         .then((resObj)=>{
           return createCharacter(resObj)
         })
@@ -346,16 +346,15 @@ describe('MoW API resources', function() {
       it('character can be updated', function() {
 
 
-        return userCreate
+        return userCreate()
         .then((resObj)=>{
           return createCharacter(resObj)
         })
         .then(resObj=>{
           let updateChar = generateUpdateCharacter(resObj.res.body.id);
-
           return chai.request(app)
-          .put(`api/characters/${resObj.res.body.id}`)
-          .set('Authorization', "Bearer" + resObj.user.authToken)
+          .put(`/api/characters/${resObj.res.body.id}`)
+          .set('Authorization', "Bearer " + resObj.user.authToken)
           .send(updateChar)
           .then(res => {
             assert.equal(res.status, 200);
@@ -372,36 +371,48 @@ describe('MoW API resources', function() {
     describe('delete Character', function() {
       it('character can be deleted', function() {
 
-        return userCreate
+        return userCreate()
         .then((resObj)=>{
           return createCharacter(resObj)
         })
         .then(resObj=>{
           return chai.request(app)
-          .delete(`api/characters/${resObj.res.body.id}`) 
+          .delete(`/api/characters/${resObj.res.body.id}`) 
+          .set('Authorization', "Bearer " + resObj.user.authToken)
+          .then(res=>{
+            assert.equal(res.status, 204)
+          })
           .then(
             Character
             .findById(resObj.res.body.id)
             .then(res=>{
               assert.isNull(res);
             })
+            .catch(err=> console.log('ERROR IN DELETECHAR ASSERT ISNT NULL', err))
           )
+          .catch(err=> console.log('ERROR IN DELETECHARACTER', err))
         })
       })
     })
     
-
+*/
     describe('Delete User', function() {
       it('should delete user info', function() {
         
-        return userCreate
+        return userCreate()
         .then(resObj=>{
+          console.log("ID", resObj.user.id);
           return chai.request(app)
-          .delete(`api/users/${resObj.user.id}`)
+          .delete(`/api/users/${resObj.user.id}`)
+          .set('Authorization', "Bearer " + resObj.user.authToken)
+          .then(res=>{
+            assert.equal(res.status, 204);
+          })
           .then(
             User
             .findById(resObj.user.id)
             .then(res=>{
+              console.log(res);
               assert.isNull(res);
             })
           )
@@ -409,4 +420,3 @@ describe('MoW API resources', function() {
       })
     })
   });
-});

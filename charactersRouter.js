@@ -95,8 +95,6 @@ router.put('/:id', jwtAuth, (req, res) => {
       error: 'Request path id and request body id values must match'
     });
   }
-  console.log("body", req.body);
-    console.log("MADE IT HERE");
   const updated = {};
   const updateableFields = ['name', 'description', 'image', 'class', 'experience', 'harm', 'Spooky', 'Divine', 'Professional', 'luck', 'public'];
   updateableFields.forEach(field => {
@@ -105,8 +103,6 @@ router.put('/:id', jwtAuth, (req, res) => {
     }
   });
 
-    console.log("so far so good!!!!")
-    console.log("UPDATED:", updated)
   Character
   .findByIdAndUpdate(req.params.id, { $set: updated }, { new: true })
   .then(updatedcharacter => res.json(updatedcharacter.serialize()))

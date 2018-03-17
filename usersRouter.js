@@ -248,7 +248,6 @@ router.put('/:id', jwtAuth, (req, res) => {
       error: 'Request path id and request body id values must match'
     });
   }
-  console.log('PUT REQUEST')
   const updated = {};
   const updateableFields = ['email', 'userName', 'password', 'firstName', 'lastName', 'characters'];
   updateableFields.forEach(field => {
