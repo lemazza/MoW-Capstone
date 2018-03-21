@@ -1,24 +1,33 @@
 <%
 var templateData = (typeof templateData != 'undefined') ? templateData : { };
 %>
+<div class="col-md-6">
+  <fieldset>
+    <legend><%= templateData.module.toUpperCase() %></legend>
+    <p>Choose starting Ratings:</p>
 
-<fieldset>
-  <legend><%= templateData.module.toUpperCase() %></legend>
-  <p><%= templateData.label %></p>
+  <% 
+  let options = templateData.options || {};
+  options.forEach((option, index)=>{
+    let joinedOpts = option.join(", ");
+    let charRatings = character.class? character[character.class].ratings : "";
+    let rateChecked = (Number(charRatings) === index)? "checked" : "";
+    let inputBSClass = "";
+    let divBSClass = "";
+    if (templateData.type === 'radio') {
+      divBSClass = 'radio'
+    } else if (templateData.type === 'checkbox') {
+      divBSClass = 'form-check';
+      inputBSClass = 'form-check-input'
+    }
+  %>
+   <div class="<%=divBSClass%>">
+    <label><input type="<%=templateData.type%>" class="<%=inputBSClass%>" name="<%=templateData.className%>[<%=templateData.module%>]" value="<%=index%>" <%=rateChecked%> ><%=joinedOpts%></label>
+  </div>
+  <% 
+  })
+  %>
+  <%# include checkboxes.ejs %>
 
-<% 
-let options = templateData.options || {};
-options.forEach((option, index)=>{
-  let joinedOpts = option.join(", ");
-  let charRatings = character.class? character[character.class].ratings : "";
-  let rateChecked = (Number(charRatings) === index)? "checked" : "";
-%>
- 
-  <label><input type="<%=templateData.type%>" name="<%=templateData.className%>[<%=templateData.module%>]" value="<%=index%>" <%=rateChecked%> ><%=joinedOpts%></label><br>
-
-<% 
-})
-%>
-<%# include checkboxes.ejs %>
-
-</fieldset>
+  </fieldset>
+</div>

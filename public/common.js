@@ -79,11 +79,11 @@ function formDisplay (main) {
     <form id="login-form" ${inline}>
       <div class="form-group">
         <label for="userName">username</label>
-        <input class="form-control" type="text" name="userName" required>
+        <input class="form-control" id="userName" type="text" name="userName" required>
       </div>
       <div class="form-group">
-        <label>password</label>
-        <input class="form-control" type="password" name="password" required>
+        <label for="password">password</label>
+        <input class="form-control" id="password" type="password" name="password" required>
       </div>
       <button class="btn" type="submit">Log In</button>
     </form>

@@ -1,35 +1,40 @@
 <%
 var templateData = (typeof templateData != 'undefined') ? templateData : { };
-console.log("in look, templateData:", templateData);
 %>
-
-<fieldset>
-  <legend><%= (templateData.module).toUpperCase()%></legend>
-  <p><%= templateData.label%></p>
-
-<% 
-let options = templateData.options || {};
-Object.keys(options).forEach(key=>{
-  let subQuestion = options[key];
-  let charKey = (character.class)? character[character.class].look[key] : ""
-%> 
-
+<div class="col-md-6">
   <fieldset>
-    <legend><%= key %></legend>
+    <legend><%= (templateData.module).toUpperCase()%></legend>
+    <p><%= templateData.label%></p>
+    <div class="row">
 
-<%
-  subQuestion.options.forEach((option, index) => {
-    let lookChecked = (charKey === option)? "checked" : "";
-%>
+  <% 
+  let options = templateData.options || {};
+  Object.keys(options).forEach(key=>{
+    let subQuestion = options[key];
+    let charKey = (character.class)? character[character.class].look[key] : ""
+  %> 
 
-    <label>
-      <input type="<%=subQuestion._type%>" name="<%=templateData.className%>[<%=templateData.module%>][<%= key %>]" value="<%=option%>" <%=lookChecked%>>
-      <%=option%>
-    </label><br>
-<%
-  }) 
-%></fieldset><%
-})
-%>
+    <div class="col-sm">
+    <fieldset>
+      <legend><%= key %></legend>
 
-</fieldset>
+  <%
+    subQuestion.options.forEach((option, index) => {
+      let lookChecked = (charKey === option)? "checked" : "";
+  %>
+    <div class="radio">
+      <label>
+        <input type="<%=subQuestion._type%>"  name="<%=templateData.className%>[<%=templateData.module%>][<%= key %>]" value="<%=option%>" <%=lookChecked%>>
+        <%=option%>
+      </label>
+    </div>
+  <%
+    }) 
+  %></fieldset>
+  </div><%
+  })
+  %>
+    </div>
+
+  </fieldset>
+</div>

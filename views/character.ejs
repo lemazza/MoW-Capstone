@@ -13,7 +13,11 @@
       <header>
         <div class="row">
           <div class="col-sm-4">
-            <image class="char-img" src="<%=charImg%>" alt="<%=character.name%>"></image>
+            <div class="large-char-img-container">
+              <!--image class="char-img" src="<%=charImg%>" alt="<%=character.name%>"></image-->
+              <img class="char-img" src="<%=charImg%>"  alt="<%character.name%>" 
+       onError="this.onerror=null;this.src='/images/default-char.jpg';">
+            </div>
           </div>
           <div class="col-sm-8">
             <h3><%=character.name%></h3>
@@ -87,7 +91,7 @@
           })%>
 <%        let harmCheck= (character.harm.number < 4)? "" : "checked";%>
           <br><div class="row form-check form-check-inline">
-              <label class="col">Harm: </label><input type="checkbox" class="col form-check-input larger-checkbox" readonly disabled="disabled" <%=harmCheck%>>
+              <label for="unstable" class="col">Unstable: </label><input type="checkbox" id="unstable" class="col form-check-input larger-checkbox" readonly disabled="disabled" <%=harmCheck%>>
           </div>
         </div>
       
@@ -211,6 +215,6 @@
 
   </main>
 </div>
-  <script type="text/javascript" src="../common.js"></script>
-  <script type="text/javascript" src="../char-page.js"></script>
+  <script type="text/javascript" src="/common.js"></script>
+  <script type="text/javascript" src="/char-page.js"></script>
 </body>

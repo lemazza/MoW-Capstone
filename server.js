@@ -27,7 +27,6 @@ const app = express();
 
 
 
-//test
 app.use(morgan('common'));
 app.use(bodyParser.json());
 
@@ -39,13 +38,7 @@ passport.use(jwtStrategy);
 const jwtAuth = passport.authenticate('jwt', { session: false });
 
 
-app.get('/', function(req,res) {
-    res.render('index', {data: data})
-});
 
-app.get('/new-user', (req, res) => {
-  res.render('new-user', {data: data});
-})
 
 app.use(cookieParser());
 app.use(express.static('public'));
@@ -54,6 +47,11 @@ app.use('/api/users', usersRouter);
 app.use('/api/characters', charactersRouter);
 app.use('/api/auth', authRouter);
 
+app.get('/', function(req,res) {
+    res.render('index', {data: data})
+});
+
+
 function renderCharacterCreator(req, res){
   res.render('character-creator', {
     data: data, 
@@ -61,9 +59,15 @@ function renderCharacterCreator(req, res){
     fileExists: require('fs').existsSync, 
     __dirname: __dirname
   });  
-
-  
 }
+
+function attachBearer(req, res, next) {
+  req.headers.authorization = `Bearer ${req.cookies.authToken}`
+  next();
+}
+/*====================================================================
+  character
+=======================================================================*/
 
 
 app.get('/character-creator.js', (req, res)=>{
@@ -115,14 +119,14 @@ app.get('/character/:id', (req, res)=>{
   })*/
 })
 
+/*====================================================================
+  user
+=======================================================================*/
 
 
-function attachBearer(req, res, next) {
-  req.headers.authorization = `Bearer ${req.cookies.authToken}`
-  next();
-}
 
-app.get('newuser', (req, res) => {
+
+app.get('/new-user', (req, res) => {
   res.render('new-user', {data: data});
 })
 
@@ -161,6 +165,12 @@ app.get('/user/:id', (req, res)=>{
     res.status(500).json({ error: 'Something went wrong.  Be sure your request is properly formatted.' });
   });
 })
+
+
+
+/*=====================================================================
+  other
+======================================================================*/
 
 
 

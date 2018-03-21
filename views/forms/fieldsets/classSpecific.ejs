@@ -2,46 +2,61 @@
 var templateData = (typeof templateData != 'undefined') ? templateData : { };
 let clSpec = (character.class && character[character.class].classSpecific)? character[character.class].classSpecific  : {}
 %>
+<div class="col">
+  <fieldset>
+  <legend><%= templateData.label.toUpperCase() %></legend>
+  <p><%= templateData.description%></p>
 
-<fieldset>
-<legend><%= templateData.label.toUpperCase() %></legend>
-<p><%= templateData.description%></p>
+  <%
 
-<%
-
-let options = templateData.options || {};
-if(typeof options[0] === "object" ){
-  options.forEach(optionObj => {
-%>
-    <fieldset>
-      <legend><%=optionObj.name%></legend>
-<%
-    optionObj.options.forEach((option,index)=>{
-      let charCheck = (character.class && clSpec[optionObj.name] && clSpec[optionObj.name][index])? "checked" : ""
-%>    
-      <label><input type="<%=optionObj.type%>" name="<%=templateData.className%>[<%=templateData.module%>][<%=optionObj.name%>][<%=index%>]" value="<%=index%>" <%=charCheck%> ><%=option%></label><br>
-<% 
+  let options = templateData.options || {};
+  if(typeof options[0] === "object" ){%>
+    <div class="row">
+  <% options.forEach(optionObj => {
+  %>
+    <div class="col-sm">
+      <fieldset>
+        <legend><%=optionObj.name%></legend>
+  <%
+      optionObj.options.forEach((option,index)=>{
+        let charCheck = (character.class && clSpec[optionObj.name] && clSpec[optionObj.name][index])? "checked" : ""
+  %>    
+      <div class="form-check">
+        <label class="form-check-label">
+          <input type="<%=optionObj.type%>" class="form-check-input" name="<%=templateData.className%>[<%=templateData.module%>][<%=optionObj.name%>][<%=index%>]" value="<%=index%>" <%=charCheck%> ><%=option%>
+        </label>
+      </div>
+  <% 
+      })
+  %>
+      </fieldset>
+    </div>
+  <%
     })
-%>
-    </fieldset>
-<%
-  })
-} else if(templateData.type === "checkbox") {
-    options.forEach((option, index)=>{
-      let charCheck = (character.class && clSpec[templateData.label] &&clSpec[templateData.label][index])? "checked" : "";
-%> 
-      <label><input type="<%=templateData.type%>" name="<%=templateData.className%>[<%=templateData.module%>][<%=templateData.label%>][<%=index%>]" value="<%=index%>" <%=charCheck%> ><%=option%></label><br>
-<% 
-  })
-} else {
-    options.forEach((option, index)=> {
-      let charCheck = (character.class && clSpec[templateData.label] &&clSpec[templateData.label] === option)? "checked" : "";
-%>
-      <label><input type="<%=templateData.type%>" name="<%=templateData.className%>[<%=templateData.module%>][<%=templateData.label%>]" value="<%=option%>" <%=charCheck%> ><%=option%></label><br>
-<%    
-  })
-}
-%>
-<%# include checkboxes.ejs %>
-
-</fieldset>
+  } else if(templateData.type === "checkbox") {
+      options.forEach((option, index)=>{
+        let charCheck = (character.class && clSpec[templateData.label] &&clSpec[templateData.label][index])? "checked" : "";
+  %> 
+      <div class="form-check">
+        <label class="form-check-label">
+          <input type="<%=templateData.type%>" class="form-check-input" name="<%=templateData.className%>[<%=templateData.module%>][<%=templateData.label%>][<%=index%>]" value="<%=index%>" <%=charCheck%> >
+          <%=option%>
+        </label>
+      </div>
+  <% 
+    })
+  } else {
+      options.forEach((option, index)=> {
+        let charCheck = (character.class && clSpec[templateData.label] &&clSpec[templateData.label] === option)? "checked" : "";
+  %>  <div class="radio">
+        <label>
+          <input type="<%=templateData.type%>" name="<%=templateData.className%>[<%=templateData.module%>][<%=templateData.label%>]" value="<%=option%>" <%=charCheck%> >
+          <%=option%>
+        </label>
+      </div>
+  <%    
+    })
+  }
+  %>
+  </fieldset>
+</div>

@@ -3,7 +3,7 @@ function watchClassChange () {
   $('input[name="classType"]').change(event=> {
     console.log("input changed");
     let classType = $('input[name="classType"]:checked').val();
-    $('.classFields').hide();
+    $('.classFields').hide(false);
     $(`#${classType}Form`).show();
   });
 }
@@ -64,7 +64,7 @@ function watchSubmit() {
     event.preventDefault();
     let cookies = cookieParser();   
     //build obj from form data
-    const formData = $(this).serializeJSON({useIntKeysAsArrayIndex: true, parseBooleans: true});
+    const formData = $('form').serializeJSON({useIntKeysAsArrayIndex: true, parseBooleans: true});
     let userId = cookies.userId || INVALID_USER_TOKEN;
     formData.creator= userId;
     
@@ -96,13 +96,73 @@ function watchDelete() {
   })
 }
 
+function watchNameChange() {
+  $('.user-history').on('change', '.hist-name', function (event) {
+    event.preventDefault();
+    let name = $(this).val();
+    let checkField = $(this).prev();
 
-$(watchDelete)
+    let checkedBoolean = (name.length)? true : false;
+    $(checkField).prop('checked', checkedBoolean);
+
+   
+  })
+}
+
+
+function watchHistChecks() {
+  $('.user-history').on('change', '.hist-check', function (event) {
+    event.preventDefault();
+    console.log('check changed')
+
+    let checkValue = $(this).prop('checked');
+    let nameField = $(this).next();
+    let name = nameField.val();
+    let placeholder = nameField.attr('placeholder');
+
+    console.log('in histchecks: checkVal, name', checkValue, name);
+    if(!checkValue || name.length) {
+      //name is there and unchecked
+      console.log('should be placeholder')
+      $(nameField).val('');
+      $(nameField).attr('placeholder', name)
+    } else if (checkValue || placeholder.length) {
+      console.log('should be val')
+      $(nameField).val(name);
+      $(nameField).attr('placeholder', '')
+
+    }
+  })
+}
+
+
+function watchHistory () {
+  watchNameChange();
+//  watchHistChecks();
+}
+
+
+function updateNameInDangerBox () {
+  $('input[name="charName"]').change(function(event){
+
+    let nameValue = $(this).val();
+    let dangerBox = $('.danger-box')
+
+    console.log(nameValue , dangerBox );
+    if(dangerBox.length) {
+      dangerBox.find('strong').val(nameValue);
+    }
+  })
+}
+
+
+$(watchHistory);
+$(watchDelete);
 $(watchClassChange);
 $(watchSubmit);
 
 //bootstrap
-$('.carousel').carousel()
+//$('.carousel').carousel()
 
 
 //from common

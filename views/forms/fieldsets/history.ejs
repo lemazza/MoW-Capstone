@@ -1,27 +1,29 @@
 <%
 var templateData = (typeof templateData != 'undefined') ? templateData : { };
 %>
+<div class="hist-field col-lg-6">
+  <fieldset>
+    <legend><%= (templateData.module).toUpperCase()%></legend>
+    <p><%= templateData.label%></p>
 
-<fieldset>
-  <legend><%= (templateData.module).toUpperCase()%></legend>
-  <p><%= templateData.label%></p>
+  <% 
+  let options = templateData.options || {};
+  options.forEach((option, index)=>{
+    let histCheck = (character.class && character[character.class].history[index])? "checked" : "";
+    let histName = (character.class && character[character.class].history[index])? character[character.class].history[index] : ""
+  %> 
+    <div class="form-group form-check user-history">
+      <label class="form-check-label">
+        <input type="<%=templateData.type%>" class="form-check-input hist-check" name="<%=templateData.className%>[<%=templateData.module%>][<%=index%>]" value="<%=index%>" <%=histCheck%> >
+        <input type="text" class="form-control hist-name" name="<%=templateData.className%>[<%=templateData.module%>][<%=index%>]" value="<%=histName%>">
+        <%=option%>
+      </label>
+    </div>
 
-<% 
-let options = templateData.options || {};
-options.forEach((option, index)=>{
-  let histCheck = (character.class && character[character.class].history[index])? "checked" : "";
-  let histName = (character.class && character[character.class].history[index])? character[character.class].history[index] : ""
-%> 
+  <% 
+  })
+  %>
+  <%# include checkboxes.ejs %>
 
-  <label>
-    <input type="<%=templateData.type%>" name="<%=templateData.className%>[<%=templateData.module%>][<%=index%>]" value="<%=index%>" <%=histCheck%> >
-    <input type="text" name="<%=templateData.className%>[<%=templateData.module%>][<%=index%>]" value="<%=histName%>">
-    <%=option%>
-  </label><br>
-
-<% 
-})
-%>
-<%# include checkboxes.ejs %>
-
-</fieldset>
+  </fieldset>
+</div>

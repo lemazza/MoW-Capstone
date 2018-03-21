@@ -7,10 +7,13 @@
 
 
   <main>
-    <form>
+    <form class="chararacter-edit-form">
 
       <% if(character.class){%>
-        <button id="delete-button" type="button" data-charId="<%=character.id%>">Delete Character</button>
+      <div class="float-right col-3 danger-box">
+        <p><strong>WARNING: </strong>This will permanently delete <strong><%=character.name%></strong>.</p>
+        <button id="delete-button" class="btn btn-danger" type="button" data-charId="<%=character.id%>">Delete Character</button>
+      </div>
       <%}
         let charName = character.name || "";
         let charImg = character.image || "";
@@ -21,36 +24,57 @@
         let charExp = character.experience  || 0;
       %>
       <fieldset>
-        <legend>Choose a Name and Class</legend>
-        <label>Character Name:<input type="text" name="charName" value="<%=charName%>"></label><br>
-        <label>Choose Image: <input type="text" placeholder="paste an image url" name="characterImage" value="<%=charName%>"></label><br>
-        <label>Class:</label><br>
-          <% 
-            for(let i = 0; i < Object.keys(data).length; i++) {
-              let key = Object.keys(data)[i]
-              classCheck = (key === character.class)? "checked" : "";
-          %>
-            <label>
-              <input value="<%= key %>" type="radio" name="classType" <%=classCheck%>>
-              <%= data[key].class %>
-            </label>
-          <%}%>
+        <legend>Choose a Name</legend>
+
+        <div class="form-group">
+          <label for="charName">Character Name:</label>
+          <input type="text" id="charName" class="form-control" name="charName" value="<%=charName%>">
+        </div>
+
+        <div class="form-group">
+          <label for="characterImage">Choose Image:</label>
+          <input type="text" id="characterImage" class="form-control" placeholder="paste an image url" name="characterImage" value="<%=charImg%>"></label>
+        </div>
       </fieldset>
 
       <fieldset>
+        <legend>Class:</legend>
+          <div class="row">
+            <% 
+              for(let i = 0; i < Object.keys(data).length; i++) {
+                let key = Object.keys(data)[i]
+                classCheck = (key === character.class)? "checked" : "";
+            %>
+            <div class="radio-inline col-md">
+              <label>
+                <input value="<%= key %>" class="float-left optradio" type="radio" name="classType" <%=classCheck%>>
+                <dt><%= data[key].class %></dt><dd><%=data[key].classDescription%></dd>
+              </label>
+            </div>
+            <%}%>
+          </div>
+      </fieldset>
+
+    <div class="row">
+      <fieldset class="col-md">
         <legend>Luck</legend>
+        <div class="form-group">
           <label>You can mark off a Luck box to either change a roll you just made to a 12, as if you had rolled that; or change a wound you have just taken to
-            count as 0-harm, no matter how bad it was. If all your Luck boxes get filled, you’ve run out of good luck.<br>
-            <input type="number" name="luck" value="<%=charLuck%>" min="0" max="7" step="1">
+          count as 0-harm, no matter how bad it was. If all your Luck boxes get filled, you’ve run out of good luck.
+            <input type="number" class="form-control" name="luck" value="<%=charLuck%>" min="0" max="7" step="1">
           </label>
+        </div>
       </fieldset>
 
-      <fieldset>
+      <fieldset class="col-md">
         <legend>Harm</legend>
+        <div class="form-group">
           <label>When you suffer harm, mark off the number of boxes equal to harm
-          suffered. When you reach four harm, tick “Unstable.”<br>
-            <input type="number" name="harm[number]" value="<%=charHarm%>" min="0" max="7" step="1">
-          </label><br>
+          suffered. When you reach four harm, tick “Unstable.”
+            <input type="number" class="form-control" name="harm[number]" value="<%=charHarm%>" min="0" max="7" step="1">
+          </label>
+        </div>
+        <div class='checkbox'>
           <label>Unstable
             <input type="checkbox" name="harm[unstable]" value="true" <%=charUnstable%> ><br>
             (Unstable injuries will worsen as time passes)
@@ -59,24 +83,26 @@
       </fieldset>
 
 
-      <fieldset>
+      <fieldset class="col-md">
         <legend>Leveling Up</legend>
+        <div class="form-group">
           <label>Whenever you roll and get a total of 6 or less, or when a move tells you to, mark an experience box.<br>
           When you have filled all five experience boxes, you level up. Erase
-          the marks and pick an improvement<br>
-            <input type="number" name="<%=charExp%>" value="0" min="0" max="5" step="1">
+          the marks and pick an improvement
+            <input type="number" class="form-control" name="experience" value="<%=charExp%>" min="0" max="5" step="1">
           </label>
       </fieldset>
+    </div>
 
 
 
  <% /** LOOP THROUGH CLASSES TO MAKE FIELDSETS FOR EACH MODULE **/ %>
         
       <%
-        const ignoreKeys = ['class', 'flavorText', 'options', 'name', 'description'];
+        const ignoreKeys = ['class', 'flavorText', 'options', 'name', 'classDescription'];
         Object.keys(data).forEach(function(className) {
-            let hiddenDiv = (className === character.class)? "" : "hidden"
-          %> <div id="<%=className%>Form" class="classFields" <%=hiddenDiv%>> <% 
+            let hiddenDiv = (className === character.class)? "" : 'style=display:none;'
+          %> <div id="<%=className%>Form" class="classFields row" <%=hiddenDiv%>> <% 
           let charClass = data[className];
           Object.keys(charClass).forEach(function(classKey) {
             /* find a named key to explore as a module with options */
@@ -117,8 +143,6 @@
                       }
               }
               let templateLocation = 'forms/fieldsets/' + templateData.module +".ejs";
-            
-            console.log(character);
 
     
          %> <%-fileExists( __dirname +"/views/" +templateLocation) &&
@@ -127,14 +151,15 @@
           };
         });
           %> </div> <%   
-    }); %>
-
-
-    <button type="submit">Submit</button>
+    });
+    let submitType = (character.class)? "put-button" : "post-button"
+    %>
+  
+    <button class="btn" id="<%=submitType%>" type="submit">Submit</button>
   </form>
 
   </main>
   <script type="text/javascript" src="/common.js"></script>
-  <script type="text/javascript" src="/char-creator-submit.js"></script>
+  <script type="text/javascript" src="/character-creator.js"></script>
 </body>
 </html>

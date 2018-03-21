@@ -1,33 +1,46 @@
 <%
 var templateData = (typeof templateData != 'undefined') ? templateData : { };%>
+<div class='col-lg-6'>
+  <fieldset>
+  <legend><%= templateData.module.toUpperCase() %></legend>
+  <p><%= templateData.label%></p>
+  <div class="row">
+  <%  let options = templateData.options || {};
+      options.forEach((optionObj, nameIndex)=>{
+        let optName = (character.class && character[character.class].gear[optionObj.name])? character[character.class].gear[optionObj.name] : "";
+        %>
+      
+        <div class="col-md">
+        <fieldset>
+          <legend><%=optionObj.name %></legend>
+          
+  <%    optionObj.options.forEach((option, index)=>{
+          if(optionObj.type === "radio") {
+            let optCheck = (character.class && optName === option)? "checked" : "";%>
+          <div class="radio">
+            <label>
+              <input type="<%=optionObj.type%>" name="<%=templateData.className%>[<%=templateData.module%>][<%=optionObj.name%>]" value="<%=option%>" <%=optCheck%> >
+              <%=option%>
+            </label>
+          </div>
+  <%      } else {
+              let boxCheck = (character.class && optName[option])? "checked" : ""
+              console.log(optName, optName[option])%> 
+          <div class="form-check">
+            <label class="form-check-label">
+             <input type="<%=optionObj.type%>" class="form-check-input" name="<%=templateData.className%>[<%=templateData.module%>][<%=optionObj.name%>][<%=option%>]" value="true" <%=boxCheck%> >
+              <%=option%>
+            </label>
+          </div>
 
-<fieldset>
-<legend><%= templateData.module.toUpperCase() %></legend>
-<p><%= templateData.label%></p>
+  <% }
+    })%>
+        
+      </fieldset>
+    </div>
+  <%})%>
 
-<%  let options = templateData.options || {};
-    options.forEach((optionObj, nameIndex)=>{
-      let optName = (character.class && character[character.class].gear[optionObj.name])? character[character.class].gear[optionObj.name] : "";
-      %>
-      <fieldset>
-        <legend><%=optionObj.name %></legend>
-
-<%    optionObj.options.forEach((option, index)=>{
-        if(optionObj.type === "radio") {
-          let optCheck = (character.class && optName === option)? "checked" : "";%>
-          <label><input type="<%=optionObj.type%>" name="<%=templateData.className%>[<%=templateData.module%>][<%=optionObj.name%>]" value="<%=option%>" <%=optCheck%> ><%=option%></label><br>
-<%      } else {
-            let boxCheck = (character.class && optName[option])? "checked" : ""
-            console.log(optName, optName[option])%> 
-
-    <label><input type="<%=optionObj.type%>" name="<%=templateData.className%>[<%=templateData.module%>][<%=optionObj.name%>][<%=option%>]" value="true" <%=boxCheck%> ><%=option%></label><br>
-
-<% }
-  })%>
-
+  <%# include checkboxes.ejs %>
+    </div>
   </fieldset>
-<%})%>
-
-<%# include checkboxes.ejs %>
-
-</fieldset>
+</div>

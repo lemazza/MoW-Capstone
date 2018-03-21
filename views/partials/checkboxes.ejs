@@ -1,4 +1,5 @@
 <%
+console.log('NUM CHECKS IN CHECKBOXES', numChecks)
   if (!(numBoxes))  numBoxes = 0;
   if (!(numChecks)) numChecks = 0;%>
 <div class="row form-check form-check-inline">
@@ -8,7 +9,7 @@
   <%}%>
 <%  for (let i = 0; i < numBoxes; i++) {
       let checkValue = (i < numChecks)? "checked" : "";%>
-      <input type="checkbox" class="col form-check-input larger-checkbox" readonly disabled="disabled" <%=checkValue%> >
+      <input type="checkbox" class="col form-check-input larger-checkbox" aria-label="<%=numChecks%> out of <%=numBoxes%>" readonly disabled="disabled" <%=checkValue%> >
 <%  }
     if(useButtons) {%>
   <button class="col" id="btn-plus">+1</button>

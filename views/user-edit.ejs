@@ -35,9 +35,11 @@
       </form>
     </div>
     <div class="col-sm">
+      <div class="danger-box">
         <h4>Delete User</h4>
-        <p><span class="text-danger">WARNING: </span>This will permanently delete <span class="text-primary"><%=user.userName%></span> and all associated characters</p>
+        <p><strong>WARNING: </strong>This will permanently delete <span class="userName-text"><%=user.userName%></span> and all associated characters</p>
         <button type="button" class="btn btn-danger" id="user-delete">Delete</button>
+      </div>
     </div>
   </div>
 
@@ -45,6 +47,6 @@
 </div>
 
 <script type="text/javascript" src="../common.js"></script>
-<script type="text/javascript" src="../edit-user.js"></script>
+<script type="text/javascript" src="../user-edit.js"></script>
 </body>
 </html>

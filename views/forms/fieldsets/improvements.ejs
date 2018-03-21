@@ -1,20 +1,26 @@
 <%
 var templateData = (typeof templateData != 'undefined') ? templateData : { };
 %>
+<div class='col-md-6'>
+  <fieldset>
+    <legend><%= (templateData.module).toUpperCase()%></legend>
+    <p><%= templateData.label%></p>
 
-<fieldset>
-  <legend><%= (templateData.module).toUpperCase()%></legend>
-  <p><%= templateData.label%></p>
+  <% 
+  let options = templateData.options || {};
+  options.forEach((option, index)=>{
+    let impCheck = (character.class && character[character.class].improvements[index])? "checked" : "";
+  %> 
+    <div class="form-check">
+    <label class='form-check-label'>
+      <input type="<%=templateData.type%>" class="form-check-input" name="<%=templateData.className%>[<%=templateData.module%>][<%=index%>]" value="<%=index%>" <%=impCheck%> >
+      <%=option%>
+    </label>
+  </div>
+  <% 
+  })
+  %>
+  <%# include checkboxes.ejs %>
 
-<% 
-let options = templateData.options || {};
-options.forEach((option, index)=>{
-  let impCheck = (character.class && character[character.class].improvements[index])? "checked" : "";
-%> 
-  <label><input type="<%=templateData.type%>" name="<%=templateData.className%>[<%=templateData.module%>][<%=index%>]" value="<%=index%>" <%=impCheck%> ><%=option%></label><br>
-<% 
-})
-%>
-<%# include checkboxes.ejs %>
-
-</fieldset>
+  </fieldset>
+</div>

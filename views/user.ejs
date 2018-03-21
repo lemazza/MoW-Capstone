@@ -5,11 +5,11 @@
 
 <%- include('partials/header', {title: 'User Page'})%>
 
-  <main>
+  <main id="user-page">
     <div class="row">
       <div class="character-list-container col-5">
         <h4>Characters</h4>
-        <ul class="list-group">
+        <div class="list-group">
 <%      user.characters.forEach(character=>{
           let charImg = (character.image)? character.image : '/images/default-char.jpg'%>
           <!--li>
@@ -19,20 +19,26 @@
             <h5><a href="/character/<%=character.id%>" alt="<%=character.name%> page"><%=character.name%></a></h5> 
             <p><%=character.class%></p>
           </li-->
-          <li class="list-group-item list-group-item-action">
-              <h5><a href="/character/<%=character.id%>"><%=character.name%></a></h5>
+          <a href="/character/<%=character.id%>" class="list-group-item list-group-item-action">
               <div class="row"> 
-                <div class="char-img-container col-sm-6">
-                  <a href="/character/<%=character.id%>"><img class="char-img" src="<%=charImg%>" alt="<%character.name%>"></a>
+                <div class="col-sm-6">
+                  <div class="char-img-container">
+                    <!--img class="img-fluid char-img" src="<%=charImg%>" alt="<%character.name%>"-->
+                    <img class="img-fluid char-img" src="<%=charImg%>"  alt="<%character.name%>" 
+                    onError="this.onerror=null;this.src='/images/default-char.jpg';">
+                  </div>
                 </div>
                 <div class="col-sm-6">
-                  Class: <%=character.class%>
+                  <h5><%=character.name%></h5>
+                  <ul class="tiny-char-display-list">
+                    <li>The <%=character.class%></li>
+                  </ul>
                 </div>
               </div>
-          </li>
+          </a>
 
 <%      })%>
-        </ul>
+        </div>
       </div>
 
       <div class="col-7">

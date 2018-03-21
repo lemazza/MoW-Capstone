@@ -19,7 +19,7 @@ function randomHunter () {
 }
 
 
-$(randomHunter)
+//$(randomHunter)
 
 //from common
 $(watchLogIn);

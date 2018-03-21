@@ -254,7 +254,7 @@ describe('MoW API resources', function() {
     return closeServer();
   });
 
-/*
+
     //expect 201 status, json object with username, id, first and last,
     //check db for extra person
     describe('Create new User at POST Endpoint', function() {
@@ -382,20 +382,21 @@ describe('MoW API resources', function() {
           .then(res=>{
             assert.equal(res.status, 204)
           })
-          .then(
-            Character
+          .then(res=> {
+            return Character
             .findById(resObj.res.body.id)
             .then(res=>{
               assert.isNull(res);
+              return true;
             })
             .catch(err=> console.log('ERROR IN DELETECHAR ASSERT ISNT NULL', err))
-          )
+          })
           .catch(err=> console.log('ERROR IN DELETECHARACTER', err))
         })
       })
     })
     
-*/
+
     describe('Delete User', function() {
       it('should delete user info', function() {
         
@@ -408,14 +409,15 @@ describe('MoW API resources', function() {
           .then(res=>{
             assert.equal(res.status, 204);
           })
-          .then(
-            User
+          .then(function() {
+            return User
             .findById(resObj.user.id)
             .then(res=>{
-              console.log(res);
+              console.log('host delete res', res);
               assert.isNull(res);
+              return true;
             })
-          )
+          })
         })     
       })
     })

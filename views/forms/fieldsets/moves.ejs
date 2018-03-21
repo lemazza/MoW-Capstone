@@ -2,24 +2,29 @@
 var templateData = (typeof templateData != 'undefined') ? templateData : { };
 %>
 
-<fieldset>
-  <legend><%= templateData.module.toUpperCase() %></legend>
-  <p><%= templateData.label %></p>
-<% 
-let options = templateData.options || {};
-options.forEach((option, index)=>{
-  let moveChecked = (character.class && character[character.class].moves[index])? "checked" : "";
+<div class="col-12">
+  <fieldset>
+    <legend><%= templateData.module.toUpperCase() %></legend>
+    <p><%= templateData.label %></p>
 
-%> 
-  <label>
-    <input type="<%=templateData.type%>" name="<%=templateData.className%>[<%=templateData.module%>][<%=index%>]" value="<%=index%>" <%=moveChecked%> >
-    <dt><%=option.name%></dt>
-    <dd><%=option.description%></dd>
-  </label><br>
+  <% 
+  let options = templateData.options || {};
+  options.forEach((option, index)=>{
+    let moveChecked = (character.class && character[character.class].moves[index])? "checked" : "";
 
-<% 
-})
-%>
-<%# include checkboxes.ejs %>
+  %> 
+    <div class="form-check-inline col-sm-5 moves-checks">
+      <label class="form-check-label">
+        <input type="<%=templateData.type%>" class="float-left form-check-input" name="<%=templateData.className%>[<%=templateData.module%>][<%=index%>]" value="<%=index%>" <%=moveChecked%> >
+        <dt><%=option.name%></dt>
+        <dd><%=option.description%></dd>
+      </label>
+    </div>
 
-</fieldset>
+  <% 
+  })
+  %>
+  <%# include checkboxes.ejs %>
+
+  </fieldset>
+</div>

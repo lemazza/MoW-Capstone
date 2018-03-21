@@ -5,9 +5,8 @@
 
 <%- include('partials/header', {title: 'Create New User'})%>
 
-  <main>
+  <main id="new-user">
     <form>
-      <legend>Create New User</legend>
       <div class="form-group">
         <label for="fname">First Name: </label>
           <input class="form-control" name="fname" id="fname" type="text">
@@ -33,7 +32,7 @@
           <input class="form-control" name="pwd" id="pwd" type="password">
       </div>
 
-      <button type="submit">Submit</button>
+      <button class="btn" type="submit">Submit</button>
     </form>
   
   </main>
