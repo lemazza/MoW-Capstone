@@ -34,7 +34,7 @@
         <button class="btn" type="submit">Submit</button>
       </form>
     </div>
-    <div class="col-sm">
+    <div class="col-sm-4">
       <div class="danger-box">
         <h4>Delete User</h4>
         <p><strong>WARNING: </strong>This will permanently delete <span class="userName-text"><%=user.userName%></span> and all associated characters</p>
@@ -44,7 +44,12 @@
   </div>
 
   </main>
+  
+  <%- include('partials/footer')%>
+
 </div>
+
+
 
 <script type="text/javascript" src="../common.js"></script>
 <script type="text/javascript" src="../user-edit.js"></script>

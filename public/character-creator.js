@@ -24,6 +24,7 @@ function charPutSuccess(res){
 function charCreateFailure(jqxhr, statusCode, statusText){
   console.log('error statuscode is', statusCode);
   console.log('error statustext is', statusText );
+  alert(`Error! ${statusCode} ${statusText}`)
 }
 
 function failureRedirectFn(redirectURL){

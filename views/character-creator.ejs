@@ -10,9 +10,9 @@
     <form class="chararacter-edit-form">
 
       <% if(character.class){%>
-      <div class="float-right col-3 danger-box">
+      <div class="float-md-right col-sm-4 danger-box">
         <p><strong>WARNING: </strong>This will permanently delete <strong><%=character.name%></strong>.</p>
-        <button id="delete-button" class="btn btn-danger" type="button" data-charId="<%=character.id%>">Delete Character</button>
+        <button id="delete-button" class="btn btn-danger btn-sm" type="button" data-charId="<%=character.id%>">Delete Character</button>
       </div>
       <%}
         let charName = character.name || "";
@@ -23,19 +23,21 @@
         let charUnstable = (character.harm && character.harm.unstable )? "checked" : "";
         let charExp = character.experience  || 0;
       %>
-      <fieldset>
-        <legend>Choose a Name</legend>
+      <div class="col-md">
+        <fieldset>
+          <legend>Choose a Name</legend>
 
-        <div class="form-group">
-          <label for="charName">Character Name:</label>
-          <input type="text" id="charName" class="form-control" name="charName" value="<%=charName%>">
-        </div>
+          <div class="form-group">
+            <label for="charName">Character Name:</label>
+            <input type="text" id="charName" class="form-control" name="charName" value="<%=charName%>">
+          </div>
 
-        <div class="form-group">
-          <label for="characterImage">Choose Image:</label>
-          <input type="text" id="characterImage" class="form-control" placeholder="paste an image url" name="characterImage" value="<%=charImg%>"></label>
-        </div>
-      </fieldset>
+          <div class="form-group">
+            <label for="characterImage">Choose Image:</label>
+            <input type="text" id="characterImage" class="form-control" placeholder="paste an image url" name="characterImage" value="<%=charImg%>"></label>
+          </div>
+        </fieldset>
+      </div>
 
       <fieldset>
         <legend>Class:</legend>
@@ -79,7 +81,6 @@
             <input type="checkbox" name="harm[unstable]" value="true" <%=charUnstable%> ><br>
             (Unstable injuries will worsen as time passes)
           </label>
-      </fieldset>
       </fieldset>
 
 
@@ -155,10 +156,13 @@
     let submitType = (character.class)? "put-button" : "post-button"
     %>
   
-    <button class="btn" id="<%=submitType%>" type="submit">Submit</button>
+    <button class="btn btn-std" id="<%=submitType%>" type="submit">Submit</button>
   </form>
 
   </main>
+  
+  <%- include('partials/footer')%>
+</div>
   <script type="text/javascript" src="/common.js"></script>
   <script type="text/javascript" src="/character-creator.js"></script>
 </body>

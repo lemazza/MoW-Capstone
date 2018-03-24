@@ -85,7 +85,7 @@ function formDisplay (main) {
         <label for="password">password</label>
         <input class="form-control" id="password" type="password" name="password" required>
       </div>
-      <button class="btn" type="submit">Log In</button>
+      <button class="btn btn-submit btn-std" type="submit">Log In</button>
     </form>
     ${createNew}
   `
@@ -94,7 +94,7 @@ function formDisplay (main) {
 function loggedInDisplay(userName, userId) {
   return `
     <span>Logged in as <a href="/user/${userId}" class="userName-text">${userName}</a></span>
-    <button class="btn btn-sm logout-button">Log Out</button>
+    <button class="btn btn-sm btn-std logout-button">Log Out</button>
   `
 }
 
@@ -158,6 +158,10 @@ function watchLogIn () {
         setCookie('userName', LoginData.userName, 7);
         setCookie('userId', data.userId, 7); 
         location.replace(`user/${data.userId}`);
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        console.log(textStatus, errorThrown);
+        alert('there was a problem logging in: '+ textStatus + " " + errorThrown);
       }
     })
   })

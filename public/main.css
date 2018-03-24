@@ -42,6 +42,7 @@ h2 {
 
 nav {
   background-color: #82933e;
+  padding: 5px;
 }
 
 h1 a:hover, span a:hover, h1 a:focus, span a:focus {
@@ -59,6 +60,36 @@ h1 a:active, span a:active {
   font-weight: bold;
   font-size: 1.25rem;
 }
+
+.btn-std:hover, .btn-std:focus {
+  background-color: #ccc;
+}
+
+.btn-std:active {
+  background-color: #999;
+  color: white;
+}
+nav btn {
+  display: inline-block;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.danger-box {
+  z-index: 99;
+}
+
+main {
+  padding-bottom: 15px;
+}
+
+footer {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
 
 /*=====================================================
   NEW USER
@@ -78,11 +109,11 @@ h1 a:active, span a:active {
   font-size: 2rem;
 }
 
-#user-page .list-group-item-action li {
+/*#user-page .list-group-item-action li {
   font-family: 'Amatic SC', cursive;
   font-weight: bold;
   font-size: 1.5rem;
-}
+}*/
 
 .char-img-container {
   max-height: 150px;
@@ -160,9 +191,11 @@ h1 a:active, span a:active {
   margin-top: 10px;
   margin-right:   5px;
   margin-left: 5px;
-  padding-bottom:   5px;
+  padding:   5px;
   background-color: #cfdba6;
 }
+
+
 
 /*=============================================================
 CHARACTER PAGE
@@ -182,6 +215,15 @@ CHARACTER PAGE
 .className {
   font-family: '3rd_manregular';
   font-size:  3rem;
+}
+
+#char-page .ratings {
+  list-style: none;
+  padding-left: 0;
+}
+
+.rating-name {
+  font-weight: bold;
 }
 
 input.larger-checkbox

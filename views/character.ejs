@@ -31,7 +31,7 @@
 
       <div>
         <h4>Ratings</h4>
-        <dl class="row">
+        <ul class="ratings row">
 <%        let ratingsArray = data[character.class].ratings.options[charClass.ratings]
           ratingsArray.forEach(rating=>{
             let category = rating.slice(0,5).trim();
@@ -49,16 +49,12 @@
             }
             rateValue = (rateValue[0]==="=")? 0 : rateValue;%>
 
-            <div class="col">
-              <dt class="text-center"><%=category%></dt>
-              <dd >
-                <div class="text-center">
-                  <%=rateValue%>
-                </div>
-              </dd>
-            </div>
+            <li class="col">
+              <p class="rating-name text-center"><%=category%></p>
+              <p class="text-center"><%=rateValue%></p>
+            </li>
 <%        })%>
-        </dl>
+        </ul>
       </div>
 
       <div class="row">
@@ -214,7 +210,10 @@
       
 
   </main>
+
+  <%- include('partials/footer')%>
 </div>
   <script type="text/javascript" src="/common.js"></script>
   <script type="text/javascript" src="/char-page.js"></script>
 </body>
+</html>

@@ -31,6 +31,7 @@ function watchSubmit () {
     })
     .fail(function (jqXHR, textStatus, errorThrown) {
         console.log(jqXHR.responseText || textStatus);
+        alert(jqXHR.responseText || textStatus);
     });
 
   })
